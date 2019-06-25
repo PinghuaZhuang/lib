@@ -1,6 +1,6 @@
 import is from './is';
 import type from './var/toType';
-// import indexOf from './var/indexOf';
+import indexOf from './var/indexOf';
 // import concat from './var/concat';
 import rnothtmlwhite from './var/rnothtmlwhite';
 
@@ -114,9 +114,9 @@ z.extend( {
     //         ( text + '' ).replace( rtrim, '' );
     // },
 
-    // inArray ( elem, arr, i ) {
-    //     return arr == null ? -1 : indexOf.call( arr, elem, i );
-    // },
+    inArray ( elem, arr, i ) {
+        return arr == null ? -1 : indexOf.call( arr, elem, i );
+    },
 
     merge ( first, second ) {
         let len = +second.length,
