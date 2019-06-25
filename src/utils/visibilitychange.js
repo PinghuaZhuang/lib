@@ -1,3 +1,6 @@
+/**
+ * @file 浏览器切换窗口触发的事件
+ */
 import prefixes from './var/prefixes';
 import document from '../var/document';
 

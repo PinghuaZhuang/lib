@@ -1,10 +1,8 @@
 import z from './core';
-import Callbacks from './class/Callbacks';
-import Data from './class/Data';
+import Callbacks from './utils/Callbacks';
 
 z.extend( {
-    Callbacks,
-    Data
+    Callbacks
 } );
 
 export default z;

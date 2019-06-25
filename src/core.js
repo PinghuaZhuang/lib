@@ -1,11 +1,13 @@
 import is from './is';
 import type from './var/toType';
-import indexOf from './var/indexOf';
-import concat from './var/concat';
+// import indexOf from './var/indexOf';
+// import concat from './var/concat';
 import rnothtmlwhite from './var/rnothtmlwhite';
 
-let rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+// trim 中使用
+// let rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
+// 创建缓存的长度
 const CACHELENGTH = 50;
 
 let z = {
@@ -106,15 +108,15 @@ z.extend( {
         return obj;
     },
 
-    trim ( text ) {
-        return text == null ?
-            '' :
-            ( text + '' ).replace( rtrim, '' );
-    },
+    // trim ( text ) {
+    //     return text == null ?
+    //         '' :
+    //         ( text + '' ).replace( rtrim, '' );
+    // },
 
-    inArray ( elem, arr, i ) {
-        return arr == null ? -1 : indexOf.call( arr, elem, i );
-    },
+    // inArray ( elem, arr, i ) {
+    //     return arr == null ? -1 : indexOf.call( arr, elem, i );
+    // },
 
     merge ( first, second ) {
         let len = +second.length,
@@ -130,56 +132,56 @@ z.extend( {
         return first;
     },
 
-    grep ( elems, callback, invert ) {
-        let callbackInverse,
-            matches = [],
-            i = 0,
-            length = elems.length,
-            callbackExpect = !invert;
+    // grep ( elems, callback, invert ) {
+    //     let callbackInverse,
+    //         matches = [],
+    //         i = 0,
+    //         length = elems.length,
+    //         callbackExpect = !invert;
 
-        // Go through the array, only saving the items
-        // that pass the validator function
-        for ( ; i < length; i++ ) {
-            callbackInverse = !callback( elems[ i ], i );
-            if ( callbackInverse !== callbackExpect ) {
-                matches.push( elems[ i ] );
-            }
-        }
+    //     // Go through the array, only saving the items
+    //     // that pass the validator function
+    //     for ( ; i < length; i++ ) {
+    //         callbackInverse = !callback( elems[ i ], i );
+    //         if ( callbackInverse !== callbackExpect ) {
+    //             matches.push( elems[ i ] );
+    //         }
+    //     }
 
-        return matches;
-    },
+    //     return matches;
+    // },
 
-    // arg is for internal usage only
-    map ( elems, callback, arg ) {
-        let length, value,
-            i = 0,
-            ret = [];
+    // // arg is for internal usage only
+    // map ( elems, callback, arg ) {
+    //     let length, value,
+    //         i = 0,
+    //         ret = [];
 
-        // Go through the array, translating each of the items to their new values
-        if ( z.isArrayLike( elems ) ) {
-            length = elems.length;
-            for ( ; i < length; i++ ) {
-                value = callback( elems[ i ], i, arg );
+    //     // Go through the array, translating each of the items to their new values
+    //     if ( z.isArrayLike( elems ) ) {
+    //         length = elems.length;
+    //         for ( ; i < length; i++ ) {
+    //             value = callback( elems[ i ], i, arg );
 
-                if ( value != null ) {
-                    ret.push( value );
-                }
-            }
+    //             if ( value != null ) {
+    //                 ret.push( value );
+    //             }
+    //         }
 
-            // Go through every key on the object,
-        } else {
-            for ( i in elems ) {
-                value = callback( elems[ i ], i, arg );
+    //         // Go through every key on the object,
+    //     } else {
+    //         for ( i in elems ) {
+    //             value = callback( elems[ i ], i, arg );
 
-                if ( value != null ) {
-                    ret.push( value );
-                }
-            }
-        }
+    //             if ( value != null ) {
+    //                 ret.push( value );
+    //             }
+    //         }
+    //     }
 
-        // Flatten any nested arrays
-        return concat.apply( [], ret );
-    },
+    //     // Flatten any nested arrays
+    //     return concat.apply( [], ret );
+    // },
 
     createOptions ( options ) {
         let object = {};
@@ -204,5 +206,7 @@ z.extend( {
         return cache;
     }
 } );
+
+
 
 export default z;
