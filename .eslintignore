@@ -1,0 +1,7 @@
+/.github
+/.vscode
+/config
+/demo
+/doc
+/*.js
+/dist
