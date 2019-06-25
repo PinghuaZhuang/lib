@@ -88,7 +88,7 @@ module.exports = {
         'no-inline-comments': 'off',
 
         // 分号
-        'semi': [ 'error', 'never' ],
+        'semi': 'off',
 
         // 与 null 对比较
         'eqeqeq': [ 'error', 'always', { 'null': 'ignore' } ],
