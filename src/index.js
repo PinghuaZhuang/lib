@@ -1,8 +1,10 @@
-import z from './core';
-import Callbacks from './utils/Callbacks';
+import z from './core'
+import Callbacks from './utils/Callbacks'
+import { getUUID } from './utils/index'
 
 z.extend( {
-    Callbacks
-} );
+    Callbacks,
+    getUUID
+} )
 
-export default z;
+export default z
