@@ -1,3 +1,5 @@
 <template>
-    <h1 class="z">My lib Z.</h1>
+    <div>
+        <h1>z.js</h1>
+    </div>
 </template>

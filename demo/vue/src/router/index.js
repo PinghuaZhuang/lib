@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import demoRouter from './demo'
+import Demo from '@/demo'
+import { zList } from '@/demo/z/router'
 
 Vue.use(Router)
 
@@ -12,6 +13,13 @@ export default new Router({
       name: 'HelloWorld',
       component: HelloWorld
     },
-    // demoRouter
+    {
+      path: '/demo',
+      name: 'demo',
+      component: Demo,
+      children: [
+        ...zList
+      ]
+    }
   ]
 })

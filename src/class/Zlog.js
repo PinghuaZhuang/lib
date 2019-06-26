@@ -51,6 +51,15 @@ export class Zlog extends ZPlainObj {
             }
         }
     }
+
+    /**
+     * 修改环境变量
+     * @param { String } env 可能值: development | production | test
+     */
+    env ( env ) {
+        this.env = env
+        return this
+    }
 }
 
 export default new Zlog( { _des: 'custom console obj.' } )
