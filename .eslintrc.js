@@ -62,10 +62,11 @@ module.exports = {
         // 使用单引号
         'quotes': [ 'error', 'single' ],
 
-        'no-multiple-empty-lines': 'off',
-
         // window 下的换行 CRLF
         'linebreak-style': [ 'error', 'windows' ],
+
+        // 空行可以有多个, true: 只能有一行
+        'no-multiple-empty-lines': 'off',
         // 多个空格
         // a  =    19;
         // 行尾注释多个空格
