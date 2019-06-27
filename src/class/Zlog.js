@@ -1,6 +1,7 @@
 /**
  * @file 封装 log 对象
- * @class
+ * @export ZLog
+ * @return Zlog 单一实例
  */
 
 import ZPlainObj from './ZPlainObj'

@@ -1,3 +1,8 @@
+/**
+ * @file create an obj.
+ * @return Data 返回单一实例
+ */
+
 import z from '../core';
 import rnothtmlwhite from '../var/rnothtmlwhite';
 import concat from '../var/concat';
