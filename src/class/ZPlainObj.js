@@ -19,6 +19,6 @@ export default class ZPlainObj {
      * 返回创建实例的参数
      */
     get _params () {
-        return z.extend( true, {}, this[ _params ] )
+        return z.extend( true, { }, this[ _params ] )
     }
 }
