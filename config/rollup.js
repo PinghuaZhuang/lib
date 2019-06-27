@@ -48,6 +48,8 @@ function getCompiler(opt) {
                         'regenerator': true
                     }
                 ],
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-transform-typeof-symbol"
             ],
             runtimeHelpers: true,
             exclude: 'node_modules/**'

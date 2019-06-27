@@ -22,7 +22,8 @@
       "plugins": [
         "istanbul",
         "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-transform-async-to-generator"
+        "@babel/plugin-transform-async-to-generator",
+        "@babel/plugin-proposal-class-properties"
       ]
     }
   }
