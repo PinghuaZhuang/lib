@@ -2,7 +2,7 @@
  * @file create plain obj.
  * @class
  */
-import z from '../index'
+import z from '../../dist/index.aio'
 
 const _params = Symbol( '_params' )
 
@@ -10,7 +10,7 @@ export default class ZPlainObj {
     constructor ( ...rest ) {
         let opt = rest[ 0 ] || { }
         if ( '_des' in opt ) {
-            this._des = _des || ''
+            this._des = opt._des || ''
         }
         this[ _params ] = z.extend( true, { }, rest )
     }
