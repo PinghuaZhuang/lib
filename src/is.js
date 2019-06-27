@@ -121,6 +121,15 @@ export function isEmptyObject ( obj ) {
     return isObject( obj );
 };
 
+export const isDom = ( typeof HTMLElement === 'object' ) ?
+    function ( obj ) {
+        return obj instanceof HTMLElement;
+    } :
+    function ( obj ) {
+        return obj && typeof obj === 'object' &&
+            obj.nodeType === 1 && typeof obj.nodeName === 'string';
+    };
+
 export default {
     isInRange,
     isNumber,
@@ -138,5 +147,6 @@ export default {
     isPlainObject,
     isArrayLike,
     isWindow,
-    isEmptyObject
+    isEmptyObject,
+    isDom,
 };
