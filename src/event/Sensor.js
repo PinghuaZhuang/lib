@@ -5,7 +5,6 @@ export default class Sensor {
     static type = 'sensor'
 
     constructor ( container = [], option ) {
-        super( option )
         if ( !z.isArray( container ) /* && z.isDom( container ) */ ) {
             container = [ container ]
         }

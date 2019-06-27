@@ -3,8 +3,8 @@ import getFiles from '@/utils/getFlies'
 const files = require.context( './', true, /\.vue$/ )
 
 // 路由配置
-export const classList = getFiles( files, ( item ) => {
-    // let name = item === 'index' ? 'obj' : item
+export const eventList = getFiles( files, ( item ) => {
+    // let name = item === 'index' ? '' : item
     return {
         path: name,
         name: name,

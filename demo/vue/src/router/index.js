@@ -3,8 +3,10 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Demo from '@/demo'
 import Class from '@/class'
+import Event from '@/event'
 import { zList } from '@/demo/z/router'
 import { classList } from '@/class/components/router'
+import { eventList } from '@/event/components/router'
 
 Vue.use(Router)
 
@@ -28,6 +30,12 @@ export default new Router({
       name: 'class',
       component: Class,
       children: [ ...classList ]
+    },
+    {
+      path: '/event',
+      name: 'event',
+      component: Event,
+      children: [ ...eventList ]
     }
   ]
 })
