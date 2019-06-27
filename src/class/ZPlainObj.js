@@ -1,5 +1,5 @@
 /**
- * @file create a plain obj.
+ * @file create plain obj.
  * @class
  */
 import z from '../../dist/index.aio'

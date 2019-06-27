@@ -11,8 +11,9 @@ export default class Emitter extends ZPlainObj {
     constructor ( opt = {} ) {
         super( opt )
 
-        if ( 'config' in opt ) {
-            this.config = opt.config // Callbacks 的配置
+        // Callbacks 的配置
+        if ( 'config' in opt && z.isPlainObject( opt.config ) ) {
+            this.config = opt.config
         }
 
         Object.assign( this, {
