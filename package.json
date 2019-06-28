@@ -1,10 +1,10 @@
 {
-  "name": "zp-lib",
-  "version": "2.0.2",
+  "name": "zph-lib",
+  "version": "2.0.3",
   "description": "my-lib.",
-  "main": "src/index.js",
-  "jsnext:main": "dist/index.aio.js",
-  "module": "dist/index.aio.js",
+  "main": "dist/index.js",
+  "jsnext:main": "dist/index.aio.min.js",
+  "module": "dist/index.aio.min.js",
   "sideEffects": false,
   "srctype": "js",
   "scripts:ts": {
