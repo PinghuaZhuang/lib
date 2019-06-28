@@ -32,14 +32,10 @@
 </template>
 
 <script>
-import A from '../../../../src/abs/EventAbs'
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  },
-  created () {
-    console.log( A, 'xxx' )
   }
 }
 </script>
