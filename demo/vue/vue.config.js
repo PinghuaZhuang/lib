@@ -7,6 +7,5 @@ function resolve(dir) {
 module.exports = {
     configureWebpack: ( config ) => {
         config.resolve.alias['@lib'] = resolve( '../../src' )
-        console.log( config.resolve.alias )
     }
 }

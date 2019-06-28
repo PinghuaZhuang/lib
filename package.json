@@ -18,7 +18,7 @@
     "build": "npm run clean && npm run build:self && npm run build:esm && npm run build:aio && npm run build:aio.min",
     "test": "npm run lint && nyc --nycrc-path .nycrc-ts mocha",
     "unit": "mocha",
-    "dev": "cd ./demo/vue && npm run dev",
+    "serve": "cd ./demo/vue && npm run serve",
     "coveralls": "nyc --nycrc-path .nycrc-ts report --reporter=text-lcov | coveralls",
     "release": "npm test && npm run build && git commit -am $npm_package_version && git push && git tag $npm_package_version && git push --tags"
   },
@@ -33,7 +33,7 @@
     "build": "npm run clean && npm run build:self && npm run build:esm && npm run build:aio && npm run build:aio.min",
     "test": "npm run lint && npm run build && npm run unit",
     "unit": "mocha ./test/*.js ./test/**/*.js",
-    "dev": "cd ./demo/vue && npm run dev",
+    "serve": "cd ./demo/vue && npm run serve",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "release": "npm test && npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags"
   },
