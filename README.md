@@ -1,8 +1,7 @@
-# My lib
-
+# zph-lib
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/PinghuaZhuang/lib/blob/master/LICENSE) [![Build Status](https://travis-ci.org/PinghuaZhuang/lib.svg?branch=master)](https://travis-ci.org/PinghuaZhuang/lib) [![Size](https://img.shields.io/github/languages/code-size/pinghuazhuang/lib.svg)](https://github.com/PinghuaZhuang/lib) [![Verison](https://img.shields.io/github/package-json/v/pinghuazhuang/lib.svg)](https://github.com/PinghuaZhuang/lib/releases) [![Tag](https://img.shields.io/github/tag/pinghuazhuang/lib.svg)](https://github.com/PinghuaZhuang/class/tags) [![Commit](https://img.shields.io/github/last-commit/pinghuazhuang/lib.svg)](https://github.com/PinghuaZhuang/lib/commits/master)
 
-my lib.
+vue-lib.
 
 
 
