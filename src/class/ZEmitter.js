@@ -1,12 +1,13 @@
 /**
  * @file 触发器
  * @class
+ * @description 发布订阅模式
  */
 
 import ZPlainObj from './ZPlainObj'
 import z from '../../dist/index.aio'
 
-export default class Emitter extends ZPlainObj {
+export default class ZEmitter extends ZPlainObj {
 
     constructor ( opt = {} ) {
         super( opt )

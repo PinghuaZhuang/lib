@@ -2,9 +2,9 @@
  * @file create plain obj.
  * @class
  */
-import z from '../'
+// import z from '../'
 
-const _params = Symbol( '_params' )
+// const _params = Symbol( '_params' )
 
 export default class ZPlainObj {
     constructor ( ...rest ) {
@@ -12,13 +12,13 @@ export default class ZPlainObj {
         if ( '_des' in opt ) {
             this._des = opt._des || ''
         }
-        this[ _params ] = z.extend( true, { }, rest )
+        // this[ _params ] = z.extend( true, { }, rest )
     }
 
     /**
      * 返回创建实例的参数
      */
-    get _params () {
-        return z.extend( true, { }, this[ _params ] )
-    }
+    // get _params () {
+    //     return z.extend( true, { }, this[ _params ] )
+    // }
 }

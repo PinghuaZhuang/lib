@@ -1,8 +1,14 @@
+/**
+ * @file 事件的抽象类
+ * @class
+ * @abstract
+ */
+
 // import ZPlainObj from '../class/ZPlainObj'
 
 // const canceled = Symbol( 'canceled' )
 
-export default class AbstractEvent /* extends ZPlainObj */ {
+export default class ZAbstractEvent /* extends ZPlainObj */ {
 
     static type = 'custom-event' // 事件类型
 

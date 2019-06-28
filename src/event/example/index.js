@@ -1,11 +1,12 @@
-import Sensor from '../Sensor'
+import ZSensor from '../ZSensor'
 import {
     MoveRight, MoveLeft,
 } from './moveEvent'
 
 const onclick = Symbol( 'click' )
 
-export default class Move extends Sensor {
+export default class Move extends ZSensor {
+    static type = 'Move'
 
     constructor ( container, option ) {
         super( container, option )

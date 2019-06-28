@@ -1,10 +1,17 @@
-// import Emitter from './Emitter'
-import z from '../../dist/index.aio'
+/**
+ * @file 传感器
+ * @class
+ */
 
-export default class Sensor {
+// import Emitter from './Emitter'
+import ZPlainObj from '../class/ZPlainObj'
+import z from '..'
+
+export default class ZSensor extends ZPlainObj {
     static type = 'sensor'
 
     constructor ( container = [], option ) {
+        super( option )
         if ( !z.isArray( container ) /* && z.isDom( container ) */ ) {
             container = [ container ]
         }
@@ -22,7 +29,7 @@ export default class Sensor {
     }
 
     /**
-     * 触发
+     * 创建触发条件
      */
     _attach () {
         return this
@@ -32,7 +39,7 @@ export default class Sensor {
     }
 
     /**
-     * 注销事件
+     * 解绑触发条件
      */
     _detach () {
         return this
@@ -41,13 +48,29 @@ export default class Sensor {
         return this._detach()
     }
 
-    on ( type, ...fn ) {
-        this.$emitter.on( type, ...fn )
+    /**
+     * 注册事件
+     * @param { String } type 事件类型
+     * @param  { Function } fn 回调函数, 参数: ZSensorEvent
+     */
+    on ( type, fn ) {
+        // this.$emitter.on( type, ...fn )
+        this.container.forEach( ( element ) => {
+            element.addEventListener( type, fn )
+        } )
         return this
     }
 
-    off ( type, ...fn ) {
-        this.$emitter.off( type, ...fn )
+    /**
+     * 注销事件
+     * @param { String } type 事件类型
+     * @param  { Function } fn 注册的事件
+     */
+    off ( type, fn ) {
+        // this.$emitter.off( type, ...fn )
+        this.container.forEach( ( element ) => {
+            element.removeEventListener( type, fn )
+        } )
         return this
     }
 
