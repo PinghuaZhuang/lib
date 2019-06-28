@@ -1,4 +1,4 @@
-import getFiles from '@/utils/getFlies'
+import getFiles from '@/utils/getFiles'
 
 const files = require.context( './', true, /\.vue$/ )
 
