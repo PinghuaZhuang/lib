@@ -1,6 +1,6 @@
 {
   "name": "zp-lib",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "my-lib.",
   "main": "src/index.js",
   "jsnext:main": "dist/index.aio.js",
@@ -17,8 +17,8 @@
     "build:aio.min": "cross-env NODE_ENV=production npm run build:aio",
     "build": "npm run clean && npm run build:self && npm run build:esm && npm run build:aio && npm run build:aio.min",
     "test": "npm run lint && nyc --nycrc-path .nycrc-ts mocha",
-    "unit": "mocha ./test/*.js ./test/**/*.js && cd ./demo/vue && npm run test:unit",
-    "serve": "cd ./demo/vue && npm run serve",
+    "unit": "mocha ./test/*.js ./test/**/*.js && cd ./demo && npm run test:unit",
+    "serve": "cd ./demo && npm run serve",
     "coveralls": "nyc --nycrc-path .nycrc-ts report --reporter=text-lcov | coveralls",
     "release": "npm test && npm run build && git commit -am $npm_package_version && git push && git tag $npm_package_version && git push --tags"
   },
@@ -32,8 +32,8 @@
     "build:aio.min": "cross-env NODE_ENV=production npm run build:aio",
     "build": "npm run clean && npm run build:self && npm run build:esm && npm run build:aio && npm run build:aio.min",
     "test": "npm run lint && npm run build && npm run unit",
-    "unit": "mocha ./test/*.js ./test/**/*.js && cd ./demo/vue && npm run test:unit",
-    "serve": "cd ./demo/vue && npm run serve",
+    "unit": "mocha ./test/*.js ./test/**/*.js && cd ./demo && npm run test:unit",
+    "serve": "cd ./demo && npm run serve",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "release": "npm test && npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags"
   },

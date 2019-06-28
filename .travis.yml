@@ -3,5 +3,5 @@ node_js:
   - "10"
   - "8"
 before_install:
-  - cd ./demo/vue && npm i
-  - cd ../../
+  - cd ./demo && npm i
+  - cd ../

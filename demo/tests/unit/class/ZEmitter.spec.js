@@ -1,4 +1,4 @@
-import ZEmitter from '../../../../../src/class/ZEmitter';
+import ZEmitter from '../../../../src/class/ZEmitter';
 
 describe( 'ZEmitter', () => {
     let obj = {}, fn

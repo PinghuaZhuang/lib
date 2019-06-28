@@ -1,4 +1,4 @@
-import Move from '../../../../../src/event/example'
+import Move from '../../../../src/event/example'
 
 describe( 'Event', () => {
     let target = {}
