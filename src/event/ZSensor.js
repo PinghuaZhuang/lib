@@ -15,13 +15,18 @@ export default class ZSensor extends ZPlainObj {
         if ( !z.isArray( container ) /* && z.isDom( container ) */ ) {
             container = [ container ]
         }
+
+        /**
+         * 触发事件的容器
+         * @type { Array<HTMLElement> }
+         */
         this.container = [ ...container ]
         // this.option = { ...option }
         // this.$emitter = new Emitter()
     }
 
     /**
-     * 返回事件类型
+     * 获取传感器类型
      * @return { String }
      */
     get type () {
