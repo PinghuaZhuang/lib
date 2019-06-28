@@ -4,3 +4,4 @@ node_js:
   - "8"
 before_install:
   - cd ./demo/vue && npm i
+  - cd ../../
