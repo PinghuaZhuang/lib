@@ -15,6 +15,8 @@ export default class ZAbstractEvent /* extends ZPlainObj */ {
     constructor ( data = {} ) {
         if ( !( '_des' in data ) ) {
             this._des = this.type
+        } else {
+            this._des = data._des
         }
         this.data = data
     }
