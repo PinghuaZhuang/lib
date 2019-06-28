@@ -11,7 +11,7 @@ import rnothtmlwhite from './var/rnothtmlwhite';
 const CACHELENGTH = 50;
 
 let z = {
-    version: VERSION
+    version: 'VERSION'
 };
 
 z.extend = ( ...args ) => {

@@ -72,6 +72,6 @@ exports.plugins = [
         // include: 'src/index.js', // 指定可以使用变量的文件路径
         exclude: 'node_modules/**',
         ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-        VERSION: JSON.stringify(pkg.version)
+        'VERSION': pkg.version
     })
 ]

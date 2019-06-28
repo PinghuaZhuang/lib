@@ -5,7 +5,7 @@
  */
 
 import ZPlainObj from './ZPlainObj'
-import z from '../../dist/index.aio'
+import z from '../'
 
 const console = window.console
 const DEV = 'development'

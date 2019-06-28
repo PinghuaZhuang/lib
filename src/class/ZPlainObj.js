@@ -2,7 +2,7 @@
  * @file create plain obj.
  * @class
  */
-import z from '../../dist/index.aio'
+import z from '../'
 
 const _params = Symbol( '_params' )
 
