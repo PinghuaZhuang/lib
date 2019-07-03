@@ -24,6 +24,7 @@
   "author": "PinghuaZhuang",
   "license": "MIT",
   "devDependencies": {
+    "mockjs": "^1.0.1-beta3",
     "ws": "^7.0.1"
   }
 }
