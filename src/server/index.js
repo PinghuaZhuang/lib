@@ -33,7 +33,7 @@ app.get( '/', ( request, response ) => {
 /**
  * 使用 mock 数据
  */
-const mockPath = path.join( __dirname, './public' ) // 模拟数据目录
+const mockPath = path.join( __dirname, './mock' ) // 模拟数据目录
 const mockFormat = '.js'.split( ' ' ) // 文件格式
 
 // 读取文件
@@ -61,9 +61,7 @@ readFilePromise.then( ( files ) => {
         app.all( `/mock/${dir}`, ( request, response, next ) => {
             // response.send( '这是mock数据.' )
             let mockOpt = require( path.join( mockPath, dir ) )
-            response.send( Mock.mock( {
-                "name|5-10": /[a-c1-3]/
-            } ) )
+            response.send( Mock.mock( mockOpt ) )
             // fs.readFile( path.join( mockPath, dir ), ( err, data ) => {
             //     if ( !err ) {
             //         response.json( Mock.mock( data ) )
