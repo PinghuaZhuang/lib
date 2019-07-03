@@ -1,0 +1,29 @@
+{
+  "name": "zp-server",
+  "version": "0.1.0",
+  "description": "A sample Node.js app using Express 4",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "engines": {
+    "node": "8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pinghuazhuang/lib"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "author": "PinghuaZhuang",
+  "license": "MIT",
+  "devDependencies": {
+    "ws": "^7.0.1"
+  }
+}
