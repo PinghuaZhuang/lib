@@ -59,7 +59,7 @@ let readFilePromise = new Promise( ( resolve, reject ) => {
 readFilePromise.then( ( files ) => {
     files.forEach( ( dir ) => {
         app.all( `/mock/${dir}`, ( request, response, next ) => {
-            // response.send( '这是mock数据.' )
+            console.log( 'xxxx' )
             let mockOpt = require( path.join( mockPath, dir ) )
             response.send( Mock.mock( mockOpt ) )
             // fs.readFile( path.join( mockPath, dir ), ( err, data ) => {
@@ -72,6 +72,11 @@ readFilePromise.then( ( files ) => {
         } )
     } )
 } )
+
+// 每次请求, 返回数据后, 不再执行
+// app.get( '/mock/test.js', ( req, res ) => {
+//     res.send( 'xxxx' )
+// } )
 
 /**
  * 监听端口
