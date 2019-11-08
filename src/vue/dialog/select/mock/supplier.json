@@ -1,0 +1,37 @@
+{
+    "status": 0,
+    "errCode": 0,
+    "msg": "success",
+    "re": {
+        "total": 2,
+        "rows": [
+            {
+                "id": 7,
+                "mid": "SC000007",
+                "name": "测试2供应商33312",
+                "supClass": "10",
+                "supClassName": "运营合伙人"
+            },
+            {
+                "id": 1,
+                "mid": "SC000004",
+                "name": "合伙人123",
+                "supClass": "10",
+                "supClassName": "运营合伙人"
+            }
+        ]
+    },
+    "searchAttribute": [
+        {
+            "searchContent": {
+                "label": "关键字",
+                "placeholder": "请输入供应商名称/NC编号"
+            }
+        }
+    ],
+    "titles": {
+        "name": "供应商名称",
+        "mid": "NC编号",
+        "supClassName": "类型"
+    }
+}
