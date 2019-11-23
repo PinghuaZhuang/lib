@@ -7,6 +7,7 @@ dist
 .nyc_output
 *.bak
 _*
+*.idea
 
 /coverage
 /.nyc_output
