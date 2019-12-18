@@ -6,8 +6,6 @@
 
 <script>
 import Move from '@lib/event/example'
-import zlog from '@lib/class/ZLog'
-// import XXX from '../../../xx'
 
 export default {
 
@@ -15,13 +13,11 @@ export default {
         this.$nextTick( () => {
             this.moveSensor = new Move( this.$refs.h1, { '_des': 'xxxx' } )
             this.moveSensor.attach()
-            zlog.log( this.moveSensor )
         } )
     },
 
     methods: {
         move ( event ) {
-            zlog.log( 'move:left===', event )
         }
     }
 }
