@@ -2,7 +2,7 @@
  * 控制台打印
  */
 
-import z from '../utils/z'
+import z from '../vue/utils/z'
 
 const CACHELENGTH = 50
 

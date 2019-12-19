@@ -167,6 +167,16 @@ export function merge ( first, second ) {
 }
 
 /**
+ * 判断是否为虚拟节点
+ * @param { Any } node
+ */
+export function isVNode ( node ) {
+    return node !== null && typeof node === 'object' &&
+        Object.prototype.hasOwnProperty.call( node, 'componentOptions' )
+}
+
+
+/**
  * 暴露函数
  */
 export default {
