@@ -3,6 +3,7 @@ import type from './var/toType';
 import indexOf from './var/indexOf';
 // import concat from './var/concat';
 import rnothtmlwhite from './var/rnothtmlwhite';
+import { extend } from './utils/extend'
 
 // trim 中使用
 // let rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
@@ -14,72 +15,7 @@ let z = {
     version: 'VERSION'
 };
 
-z.extend = ( ...args ) => {
-    let options, name, src, copy, copyIsArray, clone,
-        target = args[ 0 ] || {},
-        i = 1,
-        length = args.length,
-        deep = false;
-
-    // Handle a deep copy situation
-    if ( type( target ) === 'boolean' ) {
-        deep = target;
-
-        // Skip the boolean and the target
-        target = args[ i ] || {};
-        i++;
-    }
-
-    // Handle case when target is a string or something (possible in deep copy)
-    if ( type( target ) !== 'object' && !is.isFunction( target ) ) {
-        target = {};
-    }
-
-    // Extend jQuery itself if only one argument is passed
-    if ( i === length ) {
-        target = z;
-        i--;
-    }
-
-    for ( ; i < length; i++ ) {
-
-        // Only deal with non-null/undefined values
-        if ( ( options = args[ i ] ) != null ) {
-
-            // Extend the base object
-            for ( name in options ) {
-                src = target[ name ];
-                copy = options[ name ];
-
-                // Prevent never-ending loop
-                if ( target === copy ) {
-                    continue;
-                }
-
-                // Recurse if we're merging plain objects or arrays
-                if ( deep && copy && ( is.isPlainObject( copy ) ||
-					( copyIsArray = is.isArray( copy ) ) ) ) {
-
-                    if ( copyIsArray ) {
-                        copyIsArray = false;
-                        clone = src && is.isArray( src ) ? src : [];
-
-                    } else {
-                        clone = src && is.isPlainObject( src ) ? src : {};
-                    }
-
-                    // Never move original objects, clone them
-                    target[ name ] = z.extend( deep, clone, copy );
-
-                    // Don't bring in undefined values
-                } else if ( copy !== undefined ) {
-                    target[ name ] = copy;
-                }
-            }
-        }
-    }
-    return target;
-};
+z.extend = extend;
 
 // 类型判断
 z.extend( is );
