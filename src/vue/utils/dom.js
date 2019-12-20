@@ -1,5 +1,5 @@
-import Vue from 'vue'
-const isServer = Vue.prototype.$isServer
+// import Vue from 'vue'
+const isServer = /* Vue.prototype.$isServer */ false
 const ieVersion = isServer ? 0 : Number( document.documentMode )
 
 export const scrollIntoView = function ( container, selected ) {
