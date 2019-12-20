@@ -1,7 +1,12 @@
 /**
+ * @description es6
+ * @version 2.1.0
+ */
+
+/**
  * 获取 UUID
  */
-export function getUUID () {
+export const getUUID = function () {
     var d = new Date().getTime()
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace( /[xy]/g, function ( c ) {
         var r = ( d + Math.random() * 16 ) % 16 | 0
@@ -32,7 +37,7 @@ const { toString } = class2type
  * @param { Any } obj
  * @return { String } 'boolean'|'number'...
  */
-export function type ( obj ) {
+export const type = function ( obj ) {
     if ( obj == null ) {
         return obj + ''
     }
@@ -51,7 +56,7 @@ const fnToString = hasOwn.toString
  * 是否为 plainObj
  * @param { Any } obj
  */
-export function isPlainObject ( obj ) {
+export const isPlainObject = function ( obj ) {
     var proto, Ctor;
 
     if ( !obj || toString.call( obj ) !== '[object Object]' ) {
@@ -73,7 +78,7 @@ export function isPlainObject ( obj ) {
  * @param [ isDeep( Boolean ) ], target( Object ), Source( Object )
  * @return { Object } target
  */
-export function extend () {
+export const extend = function () {
 	var options, name, src, copy, copyIsArray, clone,
 		target = arguments[ 0 ] || {},
 		i = 1,
@@ -136,7 +141,7 @@ export function extend () {
  * 根据参数转成配置为 true 的选项
  * @param { Array | String } options 配置
  */
-export function createOptions ( options ) {
+export const createOptions = function ( options ) {
     let object = {}
     if ( type( options ) === 'string' ) {
         options = options.split( /\s|\|/ )
@@ -152,7 +157,7 @@ export function createOptions ( options ) {
  * @param { Array | likeArray } first
  * @param { Array | likeArray } second
  */
-export function merge ( first, second ) {
+export const merge = function ( first, second ) {
     let len = +second.length,
         j = 0,
         i = first.length
@@ -170,11 +175,45 @@ export function merge ( first, second ) {
  * 判断是否为虚拟节点
  * @param { Any } node
  */
-export function isVNode ( node ) {
+export const isVNode = function ( node ) {
     return node !== null && typeof node === 'object' &&
         Object.prototype.hasOwnProperty.call( node, 'componentOptions' )
 }
 
+/**
+ * 判断对象是否为空对象
+ * @param { Any } val
+ */
+export const isEmpty = function( val ) {
+    // null or undefined
+    if (val == null) return true
+
+    if (typeof val === 'boolean') return false
+
+    if (typeof val === 'number') return !val
+
+    if (val instanceof Error) return val.message === ''
+
+    switch ( Object.prototype.toString.call( val ) ) {
+        // String or Array
+        case '[object String]':
+        case '[object Array]':
+            return !val.length;
+
+        // Map or Set or File
+        case '[object File]':
+        case '[object Map]':
+        case '[object Set]': {
+            return !val.size;
+        }
+        // Plain Object
+        case '[object Object]': {
+            return !Object.keys(val).length;
+        }
+    }
+
+    return false
+}
 
 /**
  * 暴露函数
@@ -182,7 +221,7 @@ export function isVNode ( node ) {
 export default {
     install ( Vue ) {
         let $z = {
-            getUUID, type, isPlainObject, extend, merge,
+            getUUID, type, isPlainObject, extend, merge, isVNode, isEmpty,
         }
         Vue.prototype.$z = $z
 
