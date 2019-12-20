@@ -1,0 +1,29 @@
+/* 水平居中 */
+.center-block() {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 尺寸 */
+.size(@width: 100%; @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+.square(@size) {
+    .size(@size; @size);
+}
+
+/* 截断文字 */
+.text-overflow() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.branch-name {
+    display: inline-block;
+    max-width: 200px;
+    .text-overflow();
+}

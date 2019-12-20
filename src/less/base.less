@@ -1,8 +1,102 @@
-
+/* 显示 */
 ._hide_ {
     display: none;
 }
 
+/* flex 布局 */
 ._flex_ {
-
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
+
+/* 浮动 结束 */
+._fl_ {
+    float: left;
+}
+._fr_ {
+    float: right;
+}
+.clearfix {
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+/* 浮动 结束 */
+
+/* 文本 开始 */
+._tr_ {
+    text-align: right;
+}
+._tc_ {
+    text-align: center;
+}
+/* 文本结束 */
+
+/* 定位 开始 */
+._pr_ {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+._pa_ {
+    position: absolute;
+}
+._patl_ {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+._patr_ {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+._pabl_ {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+._pabr_ {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+/* 定位 结束 */
+
+/* 布局 */
+
+/* 移动端 */
+
+/* 文字溢出不换行，显示省略号，分别是1行 2行 3行的控制  开始 */
+.no-wrap,
+.multi-2-no-wrap,
+.multi-3-no-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.multi-2-no-wrap,
+.multi-3-no-wrap {
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.multi-2-no-wrap {
+    -webkit-line-clamp: 2;
+}
+
+.multi-3-no-wrap {
+    -webkit-line-clamp: 3;
+}
+/* 文字溢出不换行，显示省略号，分别是1行 2行 3行的控制  结束 */
