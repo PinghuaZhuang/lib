@@ -6,6 +6,8 @@ const INSERT_PASE = 'insertFromPaste'
 const DELETE = 'deleteContentBackward'
 
 /* 'symbol precision thousand decimal' */
+// TODO: 动态改变, 自定义指令传值
+// TODO: 过滤器
 accounting.settings.currency.symbol = ''
 accounting.settings.currency.precision = 4
 
