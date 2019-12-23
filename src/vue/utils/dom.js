@@ -71,9 +71,9 @@ export const once = function ( el, event, fn ) {
             fn.apply( this, arguments )
         }
         off( el, event, listener )
-    };
+    }
     on( el, event, listener )
-};
+}
 
 export const isScroll = ( el, vertical ) => {
     if ( isServer ) return
@@ -81,12 +81,12 @@ export const isScroll = ( el, vertical ) => {
     const determinedDirection = vertical !== null || vertical !== undefined;
     const overflow = determinedDirection
         ? vertical
-            ? getStyle( el, "overflow-y" )
-            : getStyle( el, "overflow-x" )
-        : getStyle( el, "overflow" )
+            ? getStyle( el, 'overflow-y' )
+            : getStyle( el, 'overflow-x' )
+        : getStyle( el, 'overflow' )
 
     return overflow.match( /(scroll|auto)/ )
-};
+}
 
 export const getScrollContainer = ( el, vertical ) => {
     if ( isServer ) return
