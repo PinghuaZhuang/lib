@@ -6,7 +6,7 @@ const INSERT_PASE = 'insertFromPaste'
 const DELETE = 'deleteContentBackward'
 
 /* 'symbol precision thousand decimal' */
-// accounting.settings.currency.symbol = ''
+accounting.settings.currency.symbol = ''
 accounting.settings.currency.precision = 4
 
 function getInput ( el ) {
