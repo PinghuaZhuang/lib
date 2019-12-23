@@ -104,3 +104,13 @@ export const getScrollContainer = ( el, vertical ) => {
 
     return parent
 }
+
+export const setCursor = function ( el, position ) {
+    let setSelectionRange = function () {
+        el.setSelectionRange( position, position )
+    }
+    if ( el === document.activeElement ) {
+      setSelectionRange()
+      setTimeout( setSelectionRange, 1 ) // Android Fix
+    }
+}
