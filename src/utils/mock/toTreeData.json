@@ -1,0 +1,80 @@
+[
+    {
+        "id": 1,
+        "code": "0",
+        "value": "销售协议",
+        "parentId": 2,
+        "no": 0,
+        "path": "业务类型/BUSI01",
+        "remark": "业务类型/销售协议",
+        "enable": true,
+        "isLeaf": null,
+        "creationDate": null,
+        "parentName": null
+    },
+    {
+        "id": 2,
+        "code": "0",
+        "value": "微信支付",
+        "parentId": 3,
+        "no": 0,
+        "path": "支付方式/PAY01",
+        "remark": "支付方式/微信支付",
+        "enable": true,
+        "isLeaf": null,
+        "creationDate": null,
+        "parentName": null
+    },
+    {
+        "id": 3,
+        "code": "1",
+        "value": "交易流水有误",
+        "parentId": -1,
+        "no": 1,
+        "path": "调账原因/交易流水有误",
+        "remark": "调账原因/交易流水有误",
+        "enable": true,
+        "isLeaf": null,
+        "creationDate": null,
+        "parentName": null
+    },
+    {
+        "id": 4,
+        "code": "-1",
+        "value": "非原路",
+        "parentId": 1,
+        "no": 1,
+        "path": "付款方式/非原路",
+        "remark": "付款方式/非原路",
+        "enable": true,
+        "isLeaf": null,
+        "creationDate": null,
+        "parentName": null
+    },
+    {
+        "id": 5,
+        "code": "BILL01",
+        "value": "瑞幸咖啡（厦门）有限公司",
+        "parentId": 1,
+        "no": 1,
+        "path": "开票主体信息/BILL01",
+        "remark": "开票主体信息-公司名称",
+        "enable": true,
+        "isLeaf": null,
+        "creationDate": null,
+        "parentName": null
+    },
+    {
+        "id": 6,
+        "code": "RECI01",
+        "value": "辛蓉",
+        "parentId": 2,
+        "no": 1,
+        "path": "收票邮件地址/RECI01",
+        "remark": "收票邮件地址-收件人名称",
+        "enable": true,
+        "isLeaf": null,
+        "creationDate": null,
+        "parentName": null
+    }
+]
