@@ -5,6 +5,7 @@
 
 /**
  * 获取 UUID
+ * @return { String }  唯一 ID
  */
 export const getUUID = function () {
     var d = new Date().getTime()
@@ -55,6 +56,7 @@ const fnToString = hasOwn.toString
 /**
  * 是否为 plainObj
  * @param { Any } obj
+ * @return { Boolean }
  */
 export const isPlainObject = function ( obj ) {
     var proto, Ctor;
@@ -140,6 +142,7 @@ export const extend = function () {
 /**
  * 根据参数转成配置为 true 的选项
  * @param { Array | String } options 配置
+ * @return { Object }
  */
 export const createOptions = function ( options ) {
     let object = {}
@@ -156,6 +159,7 @@ export const createOptions = function ( options ) {
  * 合并数组伪数组
  * @param { Array | likeArray } first
  * @param { Array | likeArray } second
+ * @return { Array } 返回源数组
  */
 export const merge = function ( first, second ) {
     let len = +second.length,
@@ -174,6 +178,7 @@ export const merge = function ( first, second ) {
 /**
  * 判断是否为虚拟节点
  * @param { Any } node
+ * @return { Boolean }
  */
 export const isVNode = function ( node ) {
     return node !== null && typeof node === 'object' &&
@@ -183,6 +188,7 @@ export const isVNode = function ( node ) {
 /**
  * 判断对象是否为空对象
  * @param { Any } val
+ * @return { Boolean }
  */
 export const isEmpty = function( val ) {
     // null or undefined
@@ -218,6 +224,7 @@ export const isEmpty = function( val ) {
 /**
  * 获取路由参数, query形式
  * @param { String } url 路由
+ * @return { Object } 参数对象
  */
 export const getQueryParams = function ( url ) {
     const ret = {}
