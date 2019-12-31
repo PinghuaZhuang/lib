@@ -1,6 +1,8 @@
 /**
- * @description es6
- * @version 2.1.0
+ * @file 函数工具包
+ * @description 基于es6
+ * @version 2.1.1
+ * @author PinghuaZhuang
  */
 
 /**
