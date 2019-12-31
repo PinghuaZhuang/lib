@@ -114,3 +114,13 @@ export const setCursor = function ( el, position ) {
       setTimeout( setSelectionRange, 1 ) // Android Fix
     }
 }
+
+/**
+ * 自定义下载
+ */
+export function download ( href, name = `download.xlsx` ) {
+    let eleLink = document.createElement( 'a' )
+    eleLink.download = name
+    eleLink.href = href
+    eleLink.click()
+}
