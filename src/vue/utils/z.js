@@ -216,12 +216,46 @@ export const isEmpty = function( val ) {
 }
 
 /**
+ * 获取路由参数, query形式
+ * @param { String } url 路由
+ */
+export const getQueryParams = function ( url ) {
+    const ret = {}
+    if ( type( url ) !== 'string' || url == null ) {
+        return ret
+    }
+
+    url = decodeURI( url )
+    let params = url.split( '?' ), len = 0
+
+    if ( params.length > 1 ) {
+        params = params[ 1 ].split( '&' )
+        len = params.length
+    } else { // 没有参数
+        return ret
+    }
+
+    let item, i = 0
+    for ( ; i < len; i++ ) {
+        item = params[ i ].split( '=' )
+        if ( item.length > 1 ) {
+            ret[ item[ 0 ] ] = item[ 1 ]
+        } else {
+            continue
+        }
+    }
+
+    return ret
+}
+
+/**
  * 暴露函数
  */
 export default {
     install ( Vue ) {
         let $z = {
             getUUID, type, isPlainObject, extend, merge, isVNode, isEmpty,
+            getQueryParams,
         }
         Vue.prototype.$z = $z
 
