@@ -250,7 +250,7 @@ export const getQueryParams = function ( url ) {
         if ( item.length > 1 ) {
             ret[ item[ 0 ] ] = item[ 1 ]
         } else {
-            console.error( `<<< getQueryParams 参数可能有误:`, url )
+            console.error( `<<< getQueryParams 参数可能有误:`, url, params[ i ] )
             continue
         }
     }
