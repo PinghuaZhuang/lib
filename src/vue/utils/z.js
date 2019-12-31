@@ -76,7 +76,7 @@ export const isPlainObject = function ( obj ) {
 }
 
 /**
- * 深浅拷贝
+ * 深浅拷贝, jquery
  * @param [ isDeep( Boolean ) ], target( Object ), Source( Object )
  * @return { Object } target
  */
@@ -157,8 +157,8 @@ export const createOptions = function ( options ) {
 
 /**
  * 合并数组伪数组
- * @param { Array | likeArray } first
- * @param { Array | likeArray } second
+ * @param { Array | likeArray } first 源数组
+ * @param { Array | likeArray } second 要合并到源数组的数组
  * @return { Array } 返回源数组
  */
 export const merge = function ( first, second ) {
@@ -177,7 +177,7 @@ export const merge = function ( first, second ) {
 
 /**
  * 判断是否为虚拟节点
- * @param { Any } node
+ * @param { Any } node 目标对象
  * @return { Boolean }
  */
 export const isVNode = function ( node ) {
@@ -187,7 +187,7 @@ export const isVNode = function ( node ) {
 
 /**
  * 判断对象是否为空对象
- * @param { Any } val
+ * @param { Any } val 目标对象
  * @return { Boolean }
  */
 export const isEmpty = function( val ) {
