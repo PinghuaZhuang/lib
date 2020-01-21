@@ -1,7 +1,8 @@
 /**
  * @file 进度条数据
  * @todo
- *  1. window.requestAnimationFrame 兼容
+ *  1. window.requestAnimationFrame 兼容.
+ *  2. 是否需要加入事件的概念. (在requestAnimationFrame执行?)
  */
 
 export default class ZProgress {
@@ -40,8 +41,14 @@ export default class ZProgress {
      */
     valueOf() {}
 
+    /**
+     * 进队
+     */
     queue() {}
 
+    /**
+     * 出队
+     */
     dequeue() {}
 
     get value() {}
