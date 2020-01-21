@@ -7,6 +7,7 @@ import Event from '@/event'
 import { zList } from '@/demo/z/router'
 import { classList } from '@/class/components/router'
 import { eventList } from '@/event/components/router'
+import { libList } from '@/demo/lib/router'
 
 Vue.use(Router)
 
@@ -32,7 +33,8 @@ export default new Router({
       name: 'demo',
       component: Demo,
       children: [
-        ...zList
+        ...zList,
+        ...libList,
       ]
     },
     {
@@ -46,6 +48,6 @@ export default new Router({
       name: 'event',
       component: Event,
       children: [ ...eventList ]
-    }
+    },
   ]
 })
