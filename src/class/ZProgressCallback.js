@@ -4,11 +4,12 @@ import { once } from 'lodash'
  * @file 进度条数据
  * @description
  *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
+ *  2. 去除默认10s超时后悔自动退出action.
  * @todo
  *  1. 数据计算跟队列是分开的, 应该是2个类. 抽离出action
  */
 
-const VERSION = `1.1.0`
+const VERSION = `1.0.1`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = 'started'
@@ -17,6 +18,8 @@ const STATUS_DONE = 'done'
 // 定义是有属性
 const _status = Symbol('_status')
 const _pause = Symbol('_pause')
+const _timer = Symbol('_timer')
+const _pending = Symbol('_pending')
 
 /**
  * 默认配置信息
@@ -89,10 +92,27 @@ export default class ZProgress {
          */
         this[_pause] = false
 
+        /**
+         * window.requestAnimationFrame的id
+         */
+        this[_timer] = null
+
+        /**
+         * 队列
+         * @type { Array }
+         */
+        this[_pending] = []
+
         setPropNoEnumerable(this, 'options', options)
 
         // 设置options
         ZProgress.props.forEach(k => (this.options[k] = getProp(k, options)))
+
+        /**
+         * 开始执行队列
+         * @description 添加只执行一次
+         */
+        setPropNoEnumerable(this, 'action', once(this._handleAction))
 
         // 冻结配置
         if (Object.freeze) {
@@ -114,9 +134,10 @@ export default class ZProgress {
     /**
      * 进度条计算开始
      * @description 开始的时候并不一定是0.
-     * @param { Fncntion } fn 进度条开始之前的回调.
+     * @param { Fucntion | Boolean } isAction 为函数的时候, 进度条开始之前的回调.
+     * @param { Fncntion | undefined } fn 进度条开始之前的回调.
      */
-    start(fn) {
+    start(isAction, fn) {
         // 如果已经完成
         if (this.isDone()) {
             // this.reset() // 重新开始
@@ -132,7 +153,12 @@ export default class ZProgress {
         }
 
         if (this.options.trickle) {
-            if (isFunction(fn)) fn()
+            if (isAction === true) {
+                this.timer == null && this.action()
+                if (isFunction(fn)) fn()
+            } else {
+                if (isFunction(isAction)) isAction()
+            }
             work.call(this)
             this[_status] = STATUS_STARTED
             this[_pause] = false
@@ -146,6 +172,8 @@ export default class ZProgress {
      * @param { Fucntion } fn 进度条完成时触发的回调
      */
     done(fn) {
+        // if (!this.isStarted()) return this
+        this.cancel()
         this.inc(.3 + .5 * Math.random()).set(1)
         this[_status] = STATUS_DONE
         this[_pause] = false
@@ -176,6 +204,15 @@ export default class ZProgress {
         this[_status] = STATUS_WAIT
         this[_pause] = false
         this.set(0)
+        this.cancel()
+        return this
+    }
+
+    /**
+     * 清空队列
+     */
+    cleanQueue() {
+        this[_pending] = []
         return this
     }
 
@@ -226,6 +263,86 @@ export default class ZProgress {
      */
     isQueue() {
         return this[_timer] == null
+    }
+
+    /**
+     * 队列中添加回调
+     * @param { Function } fn 添加的回调
+     */
+    queue(fn) {
+        // 添加队列时, 已经在执行? 不考虑
+        this[_pending].push(fn)
+        return this
+    }
+
+    /**
+     * 队列中删除队列
+     * @param { Fucntion } 要从队列中删除的回调
+     * @description 与jquery不同, 不执行队列.
+     */
+    dequeue(fn) {
+        const index = this[_pending].findIndex(f => f === fn)
+        if (index != -1) {
+            this[_pending].splice(index, 1)
+        }
+        return this
+    }
+
+    /**
+     * 执行队列
+     * @param { Number } t requestAnimationFrame的参数
+     */
+    startQueue(t) {
+        let i = -1
+        while (++i < this[_pending].length) {
+            const fn = this[_pending][i]
+            if (isFunction(fn) && !this[_pause]) {
+                if (fn(this.value, t) === false && this.options.stopOnFalse) {
+                    break
+                }
+            }
+        }
+        return this
+    }
+
+    /**
+     * 开始执行队列
+     * @param { Number } t 时间
+     */
+    _action(t) {
+        this[_timer] = window.requestAnimationFrame(this._action.bind(this))
+        this.startQueue(t)
+
+        // 结束时结束action
+        if (this.isDone()) {
+            this.cancel()
+        }
+        return this
+    }
+
+    /**
+     * 开始animation
+     * @description 添加超时
+     */
+    _handleAction() {
+        // window.setTimeout(function () {
+        //     console.warn(`>>> action执行超时, 自动退出.`, this.options)
+        //     if (isFunction(this.options.onTimeoutAction)) {
+        //         this.options.onTimeoutAction()
+        //     }
+        //     this.cancel()
+        // }.bind(this), this.options.timeoutAction)
+        return this._action()
+    }
+
+    /**
+     * 停止requestAnimationFrame
+     */
+    cancel() {
+        window.cancelAnimationFrame(this[_timer])
+        this[_timer] = null
+        this.action = once(this._handleAction)
+        return this
     }
 
     /**
@@ -296,3 +413,9 @@ function setPropNoEnumerable(target, prop, value) {
         writable: true,
     })
 }
+
+/**
+ * 进度条队列
+ * @todo 从 ZProgress 中抽离出来
+ */
+export class ZProgressCallbacks {}
