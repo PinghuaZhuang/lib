@@ -103,10 +103,16 @@ export default class ZProgress {
          */
         this[_pending] = []
 
-        this.options = options
+        setPropNoEnumerable(this, 'options', options)
 
         // 设置options
         ZProgress.props.forEach(k => (this.options[k] = getProp(k, options)))
+
+        /**
+         * 开始执行队列
+         * @description 添加只执行一次
+         */
+        setPropNoEnumerable(this, 'action', once(this._handleAction))
 
         // 冻结配置
         if (Object.freeze) {
@@ -330,12 +336,6 @@ export default class ZProgress {
     }
 
     /**
-     * 开始执行队列
-     * @description 添加只执行一次
-     */
-    action = once(this._handleAction)
-
-    /**
      * 停止requestAnimationFrame
      */
     cancel() {
@@ -353,6 +353,7 @@ export default class ZProgress {
     }
     /**
      * 双向绑定设置进度条
+     * @param { Number } value 设置进度条位置
      */
     set value(value) {
         this.set(value)
@@ -397,6 +398,20 @@ function isNumber(target) {
  */
 function getProp(prop, options) {
     return (prop in options) ? options[prop] : settings[prop]
+}
+
+/**
+ * 为目标对象设置不可遍历属性
+ * @param { Object } target 目标对象
+ * @param { String } prop 属性名
+ * @param { Any } valule 目标对象属性值
+ */
+function setPropNoEnumerable(target, prop, value) {
+    Object.defineProperty(target, prop, {
+        value,
+        enumerable: false,
+        writable: true,
+    })
 }
 
 /**
