@@ -1,6 +1,15 @@
 <template>
     <div>
         <h1>lib</h1>
+        <el-progress
+            class="progress"
+            :key="1"
+            :percentage="p.value * 100"
+            status="exception"></el-progress>
+        <el-progress
+            :percentage="p.value * 100"
+            :key="2"
+            status="exception"></el-progress>
     </div>
 </template>
 
@@ -23,3 +32,9 @@ export default {
     },
 }
 </script>
+
+<style lang="less">
+.progress {
+    width: 200px;
+}
+</style>

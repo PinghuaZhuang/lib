@@ -7,21 +7,62 @@
  *  4. 数据计算跟队列是分开的, 应该是2个类.
  */
 
- const STATUS_WAIT = `wait`
- const STATUS_STARTED = 'started'
- const STATUS_DONE = 'done'
+const STATUS_WAIT = `wait`
+const STATUS_STARTED = 'started'
+const STATUS_DONE = 'done'
+
+/**
+ * 默认配置信息
+ */
+const settings = {
+    /**
+     * 开始后是否步进
+     * @type { Boolean }
+     */
+    trickle: true,
+    /**
+     * 步进频率
+     * @type { Number }
+     */
+    trickleSpeed: 200,
+    /**
+     * 队列执行返回false是否停止
+     * @type { Boolean }
+     */
+    stopOnFalse: true,
+    /**
+     * 最小值
+     * @type { Number }
+     */
+    min: 0,
+    /**
+     * 最大值
+     * @type { Number }
+     */
+    max: 1,
+    /**
+     * 即将完成的最大值
+     * @type { Number }
+     */
+    // waitMax: .994,
+    waitMax: .98,
+    /**
+     * action超时时间
+     * @type { Number }
+     */
+    timeOutAction: 10000,
+}
 
 export default class ZProgress {
-    static version = `0.0.2`
+    static version = `0.2.0`
 
-    static MIN = 0
-    static MAX = 1
+    static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax', 'timeOutAction']
 
     /**
      * 进度条进度
      * @type { Number } MIN-MAX 区间内的数字
      */
-    _value = 0
+    _value = settings.min
 
     /**
      * 进度条状态
@@ -31,16 +72,16 @@ export default class ZProgress {
     _status = STATUS_WAIT
 
     /**
-     * 队列是否暂停
+     * 进度条计算是否暂停
      * @type { Boolean }
      */
-    _qpause = false
+    _pause = false
 
     /**
      * 队列执行的索引
      * @type { Number }
      */
-    _qindex = -1
+    // _qindex = -1
 
     /**
      * window.requestAnimationFrame的id
@@ -54,36 +95,69 @@ export default class ZProgress {
     _pending = []
 
     /**
-     * 在执行队列的时候, 回调返回false是否停止队列
-     * @todo 停止队列的时候是否记录索引?
-     */
-    _stopOnFalse = true
-
-    /**
      * @constructor
      */
     constructor(options = {}) {
         this.options = options
-        Object.freeze && Object.freeze(options)
 
-        // 是否开启stopOnFalse
-        this._stopOnFalse = ('stopOnFalse' in options) ? options.stopOnFalse : true
+        // 设置options
+        ZProgress.props.forEach(k => (this.options[k] = getProp(k, options)))
+
+        // 冻结配置
+        if (Object.freeze) {
+            Object.freeze(this.options)
+        }
     }
 
     /**
      * 指定滚动条位置位置
+     * @param { Number } value 指定数值
      */
     set(value) {
-        value = ZProgress.clamp(value)
+        // if (!this.isStarted()) return this
+        // 校验是否为数字, 考虑到性能, 没必要校验
+        // if (!isNumber(value)) {
+        //     console.error(`>>> set函数的入参必须为number类型.`, value)
+        //     return this
+        // }
+        if ((this._value = ZProgress.clamp(value)) >= 1) {
+            this._status = STATUS_DONE
+        }
         return this
     }
 
     /**
      * 进度条计算开始
      * @description 开始的时候并不一定是0.
-     * @param { Fucntion | Boolean } start 为函数的时候, 执行对列之前执行.
+     * @param { Fucntion | Boolean } isAction 为函数的时候, 执行对列之前执行.
      */
-    start() {
+    start(isAction, fn) {
+        // 如果已经完成
+        if (this.isDone()) {
+            // this.reset() // 重新开始
+            return this
+        }
+
+        const work = () => {
+            window.setTimeout(function () {
+                if (!this.isStarted()) return
+                if (!this._pause) this.trickle() // 是否暂停
+                work()
+            }.bind(this), this.options.trickleSpeed)
+        }
+
+        if (this.options.trickle) {
+            if (isAction === true) {
+                this.timer == null && this.action()
+                if (isFunction(fn)) fn()
+            } else {
+                if (isFunction(isAction)) isAction()
+            }
+            work.call(this)
+            this._status = STATUS_STARTED
+            this._pause = false
+        }
+
         return this
     }
 
@@ -91,13 +165,19 @@ export default class ZProgress {
      * 进度条计算完成
      */
     done() {
+        // if (!this.isStarted()) return this
+        this.cancel()
+        this.inc(.3 + .5 * Math.random()).set(1)
+        this._status = STATUS_DONE
+        this._pause = false
         return this
     }
 
     /**
      * 进度条计算暂停
      */
-    paus() {
+    pause() {
+        this._pause = true
         return this
     }
 
@@ -106,33 +186,57 @@ export default class ZProgress {
      * @description 需要一个是否stop的标识
      */
     stop() {
-        return this
+        return this.reset()
     }
 
     /**
      * 重置进度条状态
      */
     reset() {
-        this.set(0)
-        this.cancel()
         this._status = STATUS_WAIT
+        this._pause = false
+        this.set(0)
+        return this
+    }
+
+    /**
+     * 清空队列
+     */
+    cleanQueue() {
         this._pending = []
-        this._qindex = -1
+        // this._qindex = -1
         return this
     }
 
     /**
      * 步进
+     * @param { Number } amount 步进距离
      */
-    inc() {
-        return this
+    inc(amount) {
+        const n = this.value
+        if (this.value >= 1) return this
+        if (!isNumber(amount)) {
+            if (n >= 0 && n < .2) { amount = .1 }
+            else if (n >= .2 && n < .5) { amount = .04 }
+            else if (n >= .5 && n < .8) { amount = .02 }
+            else if (n >= .8 && n < .99) { amount = .005 }
+            else { amount = 0 }
+        }
+        return this.set(ZProgress.clamp(n + amount, 0, this.options.waitMax))
+    }
+
+    /**
+     * 步进别名
+     */
+    trickle() {
+        return this.inc()
     }
 
     /**
      * 是否开始
      * @return { Boolean }
      */
-    isStart() {
+    isStarted() {
         return this._status === STATUS_STARTED
     }
 
@@ -147,7 +251,9 @@ export default class ZProgress {
     /**
      * 是否开始队列
      */
-    // isQueue() {}
+    isQueue() {
+        return this._timer == null
+    }
 
     /**
      * 队列中添加回调
@@ -169,41 +275,29 @@ export default class ZProgress {
         if (index != -1) {
             this._pending.splice(index, 1)
             // 已经开始action, 判断索引.
-            if (index < this._qindex) {
-                this._qindex--
-            }
+            // if (index < this._qindex) {
+            //     this._qindex--
+            // }
         }
         return this
     }
 
     /**
      * 执行队列
-     * @param { Number } requestAnimationFrame的参数
+     * @param { Number } t requestAnimationFrame的参数
      */
-    startQueue = (function () {
-        function next(value, t) {
-            const fn = this._pending[++this._qindex]
-            if (isFunction(fn)) {
-                if (fn(value)) {
-                    next.call(this, value, t)
-                } else if (!this._stopOnFalse) {
-                    next.call(this, value, t)
-                } else {
-                    // TODO: 是否需要在这里重置索引?
-                    this._qindex = -1
+    startQueue(t) {
+        let i = -1
+        while (++i < this._pending.length) {
+            const fn = this._pending[i]
+            if (isFunction(fn) && !this._pause) {
+                if (fn(this.value, t) === false && this.options.stopOnFalse) {
+                    break
                 }
-            } else if (this._qindex >= this._pending.length) {
-                // TODO: 是否需要在这里重置索引?
-                this._qindex = -1
             }
         }
-        return function (t) {
-            if (this._pending.length >= 1) {
-                next.call(this, this.value, t)
-            }
-            return this
-        }
-    })()
+        return this
+    }
 
     /**
      * 开始执行队列
@@ -211,11 +305,12 @@ export default class ZProgress {
      * @todo 只执行一次
      */
     action(t) {
+        // if (this._timer == null) return this
         this._timer = window.requestAnimationFrame(this.action.bind(this))
         this.startQueue(t)
 
-        // 结束时 || value >= 1 结束action
-        if (this.isDone() || this.value >= 1) {
+        // 结束时结束action
+        if (this.isDone()) {
             this.cancel()
         }
         return this
@@ -234,15 +329,13 @@ export default class ZProgress {
      * 获取进度条进度
      */
     get value() {
-        // return ZProgress.clamp(this._value)
         return this._value
     }
     /**
-     * 设置进度条进度
-     * @param { Number } value
+     * 双向绑定设置进度条
      */
     set value(value) {
-        this._value = ZProgress.clamp(value)
+        this.set(value)
     }
 
     /**
@@ -252,7 +345,7 @@ export default class ZProgress {
      * @param { Number } max 最大值
      * @return { Number }
      */
-    static clamp(n, min = ZProgress.MIN, max = ZProgress.MAX) {
+    static clamp(n, min = settings.min, max = settings.max) {
         if (n < min) return min
         if (n > max) return max
         return n
@@ -267,6 +360,23 @@ export default class ZProgress {
  */
 function isFunction(fn) {
     return typeof fn === 'function'
+}
+
+/**
+ * 判断目标对象是否为数字
+ * @param { Any } target 判断的目标对象
+ */
+function isNumber(target) {
+    return typeof target === 'number'
+}
+
+/**
+ * 为实例设置属性
+ * @param { String } prop 属性名
+ * @param { Object } options 配置
+ */
+function getProp(prop, options) {
+    return (prop in options) ? options[prop] : settings[prop]
 }
 
 /**
