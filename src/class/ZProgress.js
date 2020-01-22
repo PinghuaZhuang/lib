@@ -5,18 +5,18 @@ import { once } from 'lodash'
  * @description
  *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
  * @todo
- *  1. 数据计算跟队列是分开的, 应该是2个类. 抽离出action
+ *  1. 数据扩大100倍.
  */
 
-const VERSION = `1.2.0`
+const VERSION = `1.2.1`
 
 const STATUS_WAIT = `wait`
-const STATUS_STARTED = 'started'
-const STATUS_DONE = 'done'
+const STATUS_STARTED = `started`
+const STATUS_DONE = `done`
 
 // 定义是有属性
-const _status = Symbol('_status')
-const _pause = Symbol('_pause')
+const _status = Symbol(`_status`)
+const _pause = Symbol(`_pause`)
 
 /**
  * 默认配置信息
@@ -114,9 +114,8 @@ export default class ZProgress {
     /**
      * 进度条计算开始
      * @description 开始的时候并不一定是0.
-     * @param { Fncntion } fn 进度条开始之前的回调.
      */
-    start(fn) {
+    start() {
         // 如果已经完成
         if (this.isDone()) {
             // this.reset() // 重新开始
@@ -132,7 +131,6 @@ export default class ZProgress {
         }
 
         if (this.options.trickle) {
-            if (isFunction(fn)) fn()
             work.call(this)
             this[_status] = STATUS_STARTED
             this[_pause] = false
@@ -143,13 +141,12 @@ export default class ZProgress {
 
     /**
      * 进度条计算完成
-     * @param { Fucntion } fn 进度条完成时触发的回调
+     * @description 结束后需要reset才能start
      */
-    done(fn) {
+    done() {
         this.inc(.3 + .5 * Math.random()).set(1)
         this[_status] = STATUS_DONE
         this[_pause] = false
-        if (isFunction(fn)) fn()
         return this
     }
 
