@@ -1,10 +1,9 @@
+import { once } from 'lodash'
+
 /**
  * @file 进度条数据
  * @todo
- *  1. window.requestAnimationFrame 兼容. 在这里执行队列提高性能.
- *  2. 是否需要加入事件的概念. (在requestAnimationFrame执行?)
- *  3. 是否不需要暂停?
- *  4. 数据计算跟队列是分开的, 应该是2个类.
+ *  1. 数据计算跟队列是分开的, 应该是2个类. 抽离出action
  */
 
 const STATUS_WAIT = `wait`
@@ -54,7 +53,7 @@ const settings = {
 }
 
 export default class ZProgress {
-    static version = `0.2.0`
+    static version = `0.2.2`
 
     static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax', 'timeOutAction']
 
@@ -76,12 +75,6 @@ export default class ZProgress {
      * @type { Boolean }
      */
     _pause = false
-
-    /**
-     * 队列执行的索引
-     * @type { Number }
-     */
-    // _qindex = -1
 
     /**
      * window.requestAnimationFrame的id
@@ -114,12 +107,6 @@ export default class ZProgress {
      * @param { Number } value 指定数值
      */
     set(value) {
-        // if (!this.isStarted()) return this
-        // 校验是否为数字, 考虑到性能, 没必要校验
-        // if (!isNumber(value)) {
-        //     console.error(`>>> set函数的入参必须为number类型.`, value)
-        //     return this
-        // }
         if ((this._value = ZProgress.clamp(value)) >= 1) {
             this._status = STATUS_DONE
         }
@@ -129,7 +116,8 @@ export default class ZProgress {
     /**
      * 进度条计算开始
      * @description 开始的时候并不一定是0.
-     * @param { Fucntion | Boolean } isAction 为函数的时候, 执行对列之前执行.
+     * @param { Fucntion | Boolean } isAction 为函数的时候, 进度条开始之前的回调.
+     * @param { Fncntion | undefined } fn 进度条开始之前的回调.
      */
     start(isAction, fn) {
         // 如果已经完成
@@ -163,13 +151,15 @@ export default class ZProgress {
 
     /**
      * 进度条计算完成
+     * @param { Fucntion } fn 进度条完成时触发的回调
      */
-    done() {
+    done(fn) {
         // if (!this.isStarted()) return this
         this.cancel()
         this.inc(.3 + .5 * Math.random()).set(1)
         this._status = STATUS_DONE
         this._pause = false
+        if (isFunction(fn)) fn()
         return this
     }
 
@@ -190,12 +180,13 @@ export default class ZProgress {
     }
 
     /**
-     * 重置进度条状态
+     * 重置进度条状态 && 重置队列的执行
      */
     reset() {
         this._status = STATUS_WAIT
         this._pause = false
         this.set(0)
+        this.cancel()
         return this
     }
 
@@ -204,7 +195,6 @@ export default class ZProgress {
      */
     cleanQueue() {
         this._pending = []
-        // this._qindex = -1
         return this
     }
 
@@ -243,6 +233,7 @@ export default class ZProgress {
     /**
      * 是否结束了
      * @description 在停止状态下返回, 不执行.
+     * @return { Boolean }
      */
     isDone() {
         return this._status === STATUS_DONE
@@ -250,6 +241,7 @@ export default class ZProgress {
 
     /**
      * 是否开始队列
+     * @return { Boolean }
      */
     isQueue() {
         return this._timer == null
@@ -274,10 +266,6 @@ export default class ZProgress {
         const index = this._pending.findIndex(f => f === fn)
         if (index != -1) {
             this._pending.splice(index, 1)
-            // 已经开始action, 判断索引.
-            // if (index < this._qindex) {
-            //     this._qindex--
-            // }
         }
         return this
     }
@@ -302,11 +290,9 @@ export default class ZProgress {
     /**
      * 开始执行队列
      * @param { Number } t 时间
-     * @todo 只执行一次
      */
-    action(t) {
-        // if (this._timer == null) return this
-        this._timer = window.requestAnimationFrame(this.action.bind(this))
+    _action(t) {
+        this._timer = window.requestAnimationFrame(this._action.bind(this))
         this.startQueue(t)
 
         // 结束时结束action
@@ -317,11 +303,27 @@ export default class ZProgress {
     }
 
     /**
+     * 开始animation
+     * @description 添加超时
+     */
+    handleAction() {
+        window.setTimeout(this.cancel.bind(this), this.options.timeOutAction)
+        return this._action()
+    }
+
+    /**
+     * 开始执行队列
+     * @description 添加只执行一次
+     */
+    action = once(this.handleAction)
+
+    /**
      * 停止requestAnimationFrame
      */
     cancel() {
         window.cancelAnimationFrame(this._timer)
         this._timer = null
+        this.action = once(this.handleAction)
         return this
     }
 
