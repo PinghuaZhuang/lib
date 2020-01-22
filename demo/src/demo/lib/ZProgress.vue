@@ -10,12 +10,14 @@ import ZProgress from '../../../../src/class/ZProgress'
 export default {
     name: 'ZProgress',
     data() {
-        return {}
+        return {
+            p: new ZProgress()
+        }
     },
     created() {
         console.log(`ZProgress:`, ZProgress)
+        window.p = this.p
 
-        let p = new ZProgress()
 
         console.log(`ZProgress2:`, p)
     },

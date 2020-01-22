@@ -6,6 +6,9 @@
  */
 
  const STATUS_WAIT = `wait`
+ const STATUS_STARTED = 'started'
+ const STATUS_DONE = 'done'
+
 export default class ZProgress {
     static version = `0.0.1`
 
@@ -38,9 +41,28 @@ export default class ZProgress {
     _qindex = -1
 
     /**
+     * window.requestAnimationFrame的id
+     */
+    _timer = null
+
+    /**
+     * 队列
+     * @type { Array }
+     */
+    _pending = []
+
+    _stopOnFalse = true
+
+    /**
      * @constructor
      */
-    constructor() {}
+    constructor(options = {}) {
+        this.options = options
+        Object.freeze && Object.freeze(options)
+
+        // 是否开启stopOnFalse
+        this._stopOnFalse = ('stopOnFalse' in options) ? options.stopOnFalse : true
+    }
 
     /**
      * 指定滚动条位置位置
@@ -79,7 +101,10 @@ export default class ZProgress {
      */
     reset() {
         this.set(0)
+        this.cancel()
         this._status = STATUS_WAIT
+        this._pending = []
+        this._qindex = -1
         return this
     }
 
@@ -95,7 +120,7 @@ export default class ZProgress {
      * @return { Boolean }
      */
     isStart() {
-
+        return this._status === STATUS_STARTED
     }
 
     /**
@@ -103,7 +128,7 @@ export default class ZProgress {
      * @description 在停止状态下返回, 不执行.
      */
     isDone() {
-
+        return this._status === STATUS_DONE
     }
 
     /**
@@ -112,33 +137,47 @@ export default class ZProgress {
     // isQueue() {}
 
     /**
-     * 修改valueOf方法用于方便计算
-     */
-    // valueOf() {}
-
-    /**
      * 队列中添加回调
      * @param { Function } fn 添加的回调
      */
-    queue() {
+    queue(fn) {
+        this._pending.push(fn)
         return this
     }
 
     /**
      * 队列中删除队列
      * @description 与jquery不同, 不执行队列.
-     * @return
      */
     dequeue() {
+        // TODO: 已经开始action, 判断索引
         return this
     }
 
     /**
      * 执行队列
+     * @param { Number } requestAnimationFrame的参数
      */
-    startQueue() {
-        return this
-    }
+    startQueue = (function () {
+        function next(value, t) {
+            const fn = this._pending[++this._qindex]
+            if (isFunction(fn)) {
+                if (fn(value)) {
+                    next.call(this, value, t)
+                } else if (!this._stopOnFalse) {
+                    next.call(this, value, t)
+                }
+            } else if (this._qindex >= this._pending.length) {
+                this._qindex = -1
+            }
+        }
+        return function (t) {
+            if (this._pending.length >= 1) {
+                next.call(this, this.value, t)
+            }
+            return this
+        }
+    })()
 
     /**
      * 暂停队列
@@ -148,11 +187,42 @@ export default class ZProgress {
     }
 
     /**
+     * 开始执行队列
+     * @param { Number } t 时间
+     */
+    action(t) {
+        this._timer = window.requestAnimationFrame(this.action.bind(this))
+        this.startQueue(t)
+
+        // 结束时 || value >= 1 结束action
+        if (this.isDone() || this.value >= 1) {
+            this.cancel()
+        }
+        return this
+    }
+
+    /**
+     * 停止requestAnimationFrame
+     */
+    cancel() {
+        window.cancelAnimationFrame(this._timer)
+        this._timer = null
+        return this
+    }
+
+    /**
      * 获取进度条进度
      */
     get value() {
         // return ZProgress.clamp(this._value)
         return this._value
+    }
+    /**
+     * 设置进度条进度
+     * @param { Number } value
+     */
+    set value(value) {
+        this._value = ZProgress.clamp(value)
     }
 
     /**
@@ -167,4 +237,14 @@ export default class ZProgress {
         if (n > max) return max
         return n
     }
+}
+
+
+/**
+ * 判断目标对象是否为函数
+ * @param { Any } fn 目标对象
+ * @return { Boolean }
+ */
+function isFunction(fn) {
+    return typeof fn === 'function'
 }
