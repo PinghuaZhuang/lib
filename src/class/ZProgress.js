@@ -2,9 +2,13 @@ import { once } from 'lodash'
 
 /**
  * @file 进度条数据
+ * @description
+ *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
  * @todo
  *  1. 数据计算跟队列是分开的, 应该是2个类. 抽离出action
  */
+
+const VERSION = `0.2.3`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = 'started'
@@ -53,7 +57,7 @@ const settings = {
 }
 
 export default class ZProgress {
-    static version = `0.2.2`
+    static version = VERSION
 
     static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax', 'timeOutAction']
 
