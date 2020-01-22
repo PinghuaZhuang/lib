@@ -10,6 +10,10 @@
             :percentage="p.value * 100"
             :key="2"
             status="exception"></el-progress>
+        <div class="block">
+            <span class="demonstration">默认</span>
+            <el-slider v-model="xxvalue"></el-slider>
+        </div>
     </div>
 </template>
 
@@ -22,6 +26,16 @@ export default {
         return {
             p: new ZProgress()
         }
+    },
+    computed: {
+        xxvalue: {
+            get() {
+                return this.p.value * 100
+            },
+            set(value) {
+                this.p.value = +value / 100
+            },
+        },
     },
     created() {
         console.log(`ZProgress:`, ZProgress)
