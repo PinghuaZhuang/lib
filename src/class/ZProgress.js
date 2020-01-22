@@ -3,6 +3,8 @@
  * @todo
  *  1. window.requestAnimationFrame 兼容. 在这里执行队列提高性能.
  *  2. 是否需要加入事件的概念. (在requestAnimationFrame执行?)
+ *  3. 是否不需要暂停?
+ *  4. 数据计算跟队列是分开的, 应该是2个类.
  */
 
  const STATUS_WAIT = `wait`
@@ -10,7 +12,7 @@
  const STATUS_DONE = 'done'
 
 export default class ZProgress {
-    static version = `0.0.1`
+    static version = `0.0.2`
 
     static MIN = 0
     static MAX = 1
@@ -51,6 +53,10 @@ export default class ZProgress {
      */
     _pending = []
 
+    /**
+     * 在执行队列的时候, 回调返回false是否停止队列
+     * @todo 停止队列的时候是否记录索引?
+     */
     _stopOnFalse = true
 
     /**
@@ -73,7 +79,7 @@ export default class ZProgress {
     }
 
     /**
-     * 进度条开始
+     * 进度条计算开始
      * @description 开始的时候并不一定是0.
      * @param { Fucntion | Boolean } start 为函数的时候, 执行对列之前执行.
      */
@@ -82,14 +88,21 @@ export default class ZProgress {
     }
 
     /**
-     * 进度条完成
+     * 进度条计算完成
      */
     done() {
         return this
     }
 
     /**
-     * 进度条停止
+     * 进度条计算暂停
+     */
+    paus() {
+        return this
+    }
+
+    /**
+     * 进度条计算停止
      * @description 需要一个是否stop的标识
      */
     stop() {
@@ -141,16 +154,25 @@ export default class ZProgress {
      * @param { Function } fn 添加的回调
      */
     queue(fn) {
+        // 添加队列时, 已经在执行? 不考虑
         this._pending.push(fn)
         return this
     }
 
     /**
      * 队列中删除队列
+     * @param { Fucntion } 要从队列中删除的回调
      * @description 与jquery不同, 不执行队列.
      */
-    dequeue() {
-        // TODO: 已经开始action, 判断索引
+    dequeue(fn) {
+        const index = this._pending.findIndex(f => f === fn)
+        if (index != -1) {
+            this._pending.splice(index, 1)
+            // 已经开始action, 判断索引.
+            if (index < this._qindex) {
+                this._qindex--
+            }
+        }
         return this
     }
 
@@ -166,8 +188,12 @@ export default class ZProgress {
                     next.call(this, value, t)
                 } else if (!this._stopOnFalse) {
                     next.call(this, value, t)
+                } else {
+                    // TODO: 是否需要在这里重置索引?
+                    this._qindex = -1
                 }
             } else if (this._qindex >= this._pending.length) {
+                // TODO: 是否需要在这里重置索引?
                 this._qindex = -1
             }
         }
@@ -180,15 +206,9 @@ export default class ZProgress {
     })()
 
     /**
-     * 暂停队列
-     */
-    pauseQueue() {
-        return this
-    }
-
-    /**
      * 开始执行队列
      * @param { Number } t 时间
+     * @todo 只执行一次
      */
     action(t) {
         this._timer = window.requestAnimationFrame(this.action.bind(this))
@@ -248,3 +268,9 @@ export default class ZProgress {
 function isFunction(fn) {
     return typeof fn === 'function'
 }
+
+/**
+ * 进度条队列
+ * @todo 从 ZProgress 中抽离出来
+ */
+export class ZProgressCallbacks {}
