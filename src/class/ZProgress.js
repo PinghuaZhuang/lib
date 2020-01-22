@@ -4,12 +4,12 @@ import { once } from 'lodash'
  * @file 进度条数据
  * @description
  *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
- *  2. 默认10s超时后悔自动退出action.
+ *  2. 去除默认10s超时后悔自动退出action.
  * @todo
  *  1. 数据计算跟队列是分开的, 应该是2个类. 抽离出action
  */
 
-const VERSION = `1.0.0`
+const VERSION = `1.0.1`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = 'started'
@@ -60,13 +60,13 @@ const settings = {
      * action超时时间
      * @type { Number }
      */
-    timeoutAction: 10000,
+    // timeoutAction: 10000,
 }
 
 export default class ZProgress {
     static version = VERSION
 
-    static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax', 'timeoutAction']
+    static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax'/* , 'timeoutAction' */]
 
     /**
      * 进度条进度
@@ -319,13 +319,13 @@ export default class ZProgress {
      * @description 添加超时
      */
     _handleAction() {
-        window.setTimeout(function () {
-            console.warn(`>>> action执行超时, 自动退出.`, this.options)
-            if (isFunction(this.options.onTimeoutAction)) {
-                this.options.onTimeoutAction()
-            }
-            this.cancel()
-        }.bind(this), this.options.timeoutAction)
+        // window.setTimeout(function () {
+        //     console.warn(`>>> action执行超时, 自动退出.`, this.options)
+        //     if (isFunction(this.options.onTimeoutAction)) {
+        //         this.options.onTimeoutAction()
+        //     }
+        //     this.cancel()
+        // }.bind(this), this.options.timeoutAction)
         return this._action()
     }
 
