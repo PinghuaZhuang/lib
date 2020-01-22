@@ -221,14 +221,6 @@ export default class ZProgress {
     }
 
     /**
-     * 是否开始队列
-     * @return { Boolean }
-     */
-    isQueue() {
-        return this[_timer] == null
-    }
-
-    /**
      * 获取进度条进度
      */
     get value() {
