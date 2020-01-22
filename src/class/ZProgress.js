@@ -310,7 +310,7 @@ export default class ZProgress {
      * 开始animation
      * @description 添加超时
      */
-    handleAction() {
+    _handleAction() {
         window.setTimeout(this.cancel.bind(this), this.options.timeOutAction)
         return this._action()
     }
@@ -319,7 +319,7 @@ export default class ZProgress {
      * 开始执行队列
      * @description 添加只执行一次
      */
-    action = once(this.handleAction)
+    action = once(this._handleAction)
 
     /**
      * 停止requestAnimationFrame
@@ -327,7 +327,7 @@ export default class ZProgress {
     cancel() {
         window.cancelAnimationFrame(this._timer)
         this._timer = null
-        this.action = once(this.handleAction)
+        this.action = once(this._handleAction)
         return this
     }
 
