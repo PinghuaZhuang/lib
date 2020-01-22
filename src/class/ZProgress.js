@@ -8,7 +8,7 @@ import { once } from 'lodash'
  *  1. 数据计算跟队列是分开的, 应该是2个类. 抽离出action
  */
 
-const VERSION = `1.1.0`
+const VERSION = `1.2.0`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = 'started'
