@@ -38,7 +38,7 @@ export default {
         },
     },
     created() {
-        console.log(`ZProgress:`, ZProgress)
+        console.log(`ZProgress:`, this, ZProgress)
         window.p = this.p
 
 

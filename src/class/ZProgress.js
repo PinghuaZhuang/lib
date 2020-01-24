@@ -4,7 +4,7 @@
  *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
  */
 
-const VERSION = `1.3.0`
+const VERSION = `1.3.1`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = `started`
@@ -65,7 +65,7 @@ export default class ZProgress {
      * 进度条进度
      * @type { Number } MIN-MAX 区间内的数字
      */
-    _value = settings.min
+    $_value = settings.min
 
     /**
      * @constructor
@@ -101,7 +101,7 @@ export default class ZProgress {
      * @param { Number } value 指定数值
      */
     set(value) {
-        if ((this._value = ZProgress.clamp(value)) >= 100) {
+        if ((this.$_value = ZProgress.clamp(value)) >= 100) {
             this[_status] = STATUS_DONE
         }
         return this
@@ -217,7 +217,7 @@ export default class ZProgress {
      * 获取进度条进度
      */
     get value() {
-        return this._value
+        return this.$_value
     }
     /**
      * 双向绑定设置进度条
