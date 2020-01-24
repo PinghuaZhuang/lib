@@ -4,7 +4,7 @@
  *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
  */
 
-const VERSION = `1.3.1`
+const VERSION = `1.3.2`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = `started`
@@ -29,11 +29,6 @@ const settings = {
      */
     trickleSpeed: 200,
     /**
-     * 队列执行返回false是否停止
-     * @type { Boolean }
-     */
-    stopOnFalse: true,
-    /**
      * 最小值
      * @type { Number }
      */
@@ -49,17 +44,13 @@ const settings = {
      */
     // waitMax: .994,
     waitMax: 98,
-    /**
-     * action超时时间
-     * @type { Number }
-     */
-    // timeoutAction: 10000,
 }
 
 export default class ZProgress {
     static version = VERSION
 
-    static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax'/* , 'timeoutAction' */]
+    // 配置项
+    static props = ['trickle', 'trickleSpeed', 'waitMax']
 
     /**
      * 进度条进度
@@ -112,8 +103,9 @@ export default class ZProgress {
      * @description 开始的时候并不一定是0.
      */
     start() {
+        this[_pause] = false
         // 如果已经完成
-        if (this.isDone()) {
+        if (this.isDone() || this.isStarted()) {
             // this.reset() // 重新开始
             return this
         }
@@ -202,6 +194,14 @@ export default class ZProgress {
      */
     isStarted() {
         return this[_status] === STATUS_STARTED
+    }
+
+    /**
+     * 是否暂停
+     * @return { Boolean }
+     */
+    isPause() {
+        return !!this[_pause]
     }
 
     /**
