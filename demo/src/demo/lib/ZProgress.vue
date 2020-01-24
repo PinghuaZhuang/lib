@@ -4,10 +4,10 @@
         <el-progress
             class="progress"
             :key="1"
-            :percentage="p.value * 100"
+            :percentage="p.value"
             status="exception"></el-progress>
         <el-progress
-            :percentage="p.value * 100"
+            :percentage="p.value"
             :key="2"
             status="exception"></el-progress>
         <div class="block">
@@ -30,10 +30,10 @@ export default {
     computed: {
         xxvalue: {
             get() {
-                return this.p.value * 100
+                return this.p.value
             },
             set(value) {
-                this.p.value = +value / 100
+                this.p.value = value
             },
         },
     },
