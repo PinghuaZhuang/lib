@@ -1,14 +1,10 @@
-import { once } from 'lodash'
-
 /**
- * @file 进度条数据
+ * @file 进度条数值
  * @description
- *  1. done之后不能执行start无效, 必须reset, 这样比较合理.
- * @todo
- *  1. 数据扩大100倍.
+ *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
  */
 
-const VERSION = `1.2.1`
+const VERSION = `1.3.2`
 
 const STATUS_WAIT = `wait`
 const STATUS_STARTED = `started`
@@ -33,11 +29,6 @@ const settings = {
      */
     trickleSpeed: 200,
     /**
-     * 队列执行返回false是否停止
-     * @type { Boolean }
-     */
-    stopOnFalse: true,
-    /**
      * 最小值
      * @type { Number }
      */
@@ -46,18 +37,13 @@ const settings = {
      * 最大值
      * @type { Number }
      */
-    max: 1,
+    max: 100,
     /**
      * 即将完成的最大值
      * @type { Number }
      */
     // waitMax: .994,
-    waitMax: .98,
-    /**
-     * action超时时间
-     * @type { Number }
-     */
-    // timeoutAction: 10000,
+    waitMax: 98,
 }
 
 /**
@@ -66,16 +52,14 @@ const settings = {
 export default class ZProgress {
     static version = VERSION
 
-    /**
-     * options 参数
-     */
-    static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax'/* , 'timeoutAction' */]
+    // 配置项
+    static props = ['trickle', 'trickleSpeed', 'waitMax']
 
     /**
      * 进度条进度
      * @type { Number } MIN-MAX 区间内的数字
      */
-    _value = settings.min
+    $_value = settings.min
 
     /**
      * @param { Object } options { stopOnFalse, trickle, trickleSpeed, waitMax }
@@ -112,7 +96,7 @@ export default class ZProgress {
      * @param { Number } value 指定数值
      */
     set(value) {
-        if ((this._value = ZProgress.clamp(value)) >= 1) {
+        if ((this.$_value = ZProgress.clamp(value)) >= 100) {
             this[_status] = STATUS_DONE
         }
         return this
@@ -123,8 +107,9 @@ export default class ZProgress {
      * @description 开始的时候并不一定是0.
      */
     start() {
+        this[_pause] = false
         // 如果已经完成
-        if (this.isDone()) {
+        if (this.isDone() || this.isStarted()) {
             // this.reset() // 重新开始
             return this
         }
@@ -151,7 +136,7 @@ export default class ZProgress {
      * @description 结束后需要reset才能start
      */
     done() {
-        this.inc(.3 + .5 * Math.random()).set(1)
+        this.inc(30 + 50 * Math.random()).set(100)
         this[_status] = STATUS_DONE
         this[_pause] = false
         return this
@@ -189,12 +174,12 @@ export default class ZProgress {
      */
     inc(amount) {
         const n = this.value
-        if (this.value >= 1) return this
+        if (this.value >= 100) return this
         if (!isNumber(amount)) {
-            if (n >= 0 && n < .2) { amount = .1 }
-            else if (n >= .2 && n < .5) { amount = .04 }
-            else if (n >= .5 && n < .8) { amount = .02 }
-            else if (n >= .8 && n < .99) { amount = .005 }
+            if (n >= 0 && n < 20) { amount = 10 }
+            else if (n >= 20 && n < 50) { amount = 4 }
+            else if (n >= 50 && n < 80) { amount = 2 }
+            else if (n >= 80 && n < 99) { amount = .5 }
             else { amount = 0 }
         }
         return this.set(ZProgress.clamp(n + amount, 0, this.options.waitMax))
@@ -216,6 +201,14 @@ export default class ZProgress {
     }
 
     /**
+     * 是否暂停
+     * @return { Boolean }
+     */
+    isPause() {
+        return !!this[_pause]
+    }
+
+    /**
      * 是否结束了
      * @description 在停止状态下返回, 不执行.
      * @return { Boolean }
@@ -228,7 +221,7 @@ export default class ZProgress {
      * 获取进度条进度
      */
     get value() {
-        return this._value
+        return this.$_value
     }
     /**
      * 双向绑定设置进度条
