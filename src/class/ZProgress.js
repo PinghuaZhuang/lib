@@ -3,7 +3,7 @@ import { once } from 'lodash'
 /**
  * @file 进度条数据
  * @description
- *  1. done 之后不能执行start无效, 必须reset, 这样比较合理.
+ *  1. done之后不能执行start无效, 必须reset, 这样比较合理.
  * @todo
  *  1. 数据扩大100倍.
  */
@@ -60,9 +60,15 @@ const settings = {
     // timeoutAction: 10000,
 }
 
+/**
+ * 进度条
+ */
 export default class ZProgress {
     static version = VERSION
 
+    /**
+     * options 参数
+     */
     static props = ['stopOnFalse', 'trickle', 'trickleSpeed', 'waitMax'/* , 'timeoutAction' */]
 
     /**
@@ -72,6 +78,7 @@ export default class ZProgress {
     _value = settings.min
 
     /**
+     * @param { Object } options { stopOnFalse, trickle, trickleSpeed, waitMax }
      * @constructor
      */
     constructor(options = {}) {
