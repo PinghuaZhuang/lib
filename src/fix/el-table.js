@@ -1,10 +1,13 @@
 /**
  * @file 修复 el-table 的一些问题
  */
+
+/**
+ * 修复表格懒加载不能快速点击的问题
+ */
 export const fixLazyLoad = {
     methods: {
         /**
-         * 修复表格懒加载不能快速点击的问题
          * @param { Vue } tableVm el-table的实例
          * @param { TableRow } row 行对象
          * @param { TreeNode } tree el-table的TreeNode实例
