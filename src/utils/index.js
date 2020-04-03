@@ -1,13 +1,13 @@
 /**
  * 获取 UUID
  */
-export function getUUID () {
+export function getUUID() {
     let d = new Date().getTime()
-    let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace( /[xy]/g, function ( c ) {
-        let r = ( d + Math.random() * 16 ) % 16 | 0
-        d = Math.floor( d / 16 )
-        return ( c === 'x' ? r : ( r & 0x3 | 0x8 ) ).toString( 16 )
-    } )
+    let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = (d + Math.random() * 16) % 16 | 0
+        d = Math.floor(d / 16)
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
+    })
     return uuid
 }
 
@@ -18,7 +18,7 @@ export function getUUID () {
  * @param { String } dec 分割符, 默认'_'
  * @return { String }
  */
-export const toCamelCase = function(key, dec = '_') {
+export const toCamelCase = function (key, dec = '_') {
     if (typeof dec !== 'string') return key
     if (dec === '') return key
 
@@ -38,7 +38,7 @@ export const toCamelCase = function(key, dec = '_') {
  * @param { String } url 路由
  * @return { Object } 参数对象
  */
-export const getQueryParams = function(url) {
+export const getQueryParams = function (url) {
     const ret = {}
     if (type(url) !== 'string' || url == null) {
         return ret
@@ -58,7 +58,7 @@ export const getQueryParams = function(url) {
     let item
     let i = 0
     for (; i < len; i++) {
-        item = params[ i ].split('=')
+        item = params[i].split('=')
         if (item.length > 1) {
             ret[item[0]] = item[1]
         } else {
@@ -82,4 +82,52 @@ export function download(href, name = `download.xlsx`) {
     eleLink.href = href
     eleLink.click()
     return eleLink
+}
+
+/**
+ * 拷贝文本到剪切板
+ * @param { String } text 要拷贝的问题
+ */
+export function copyToClipboard(text) {
+    if (text == null || text === '') return
+
+    let textArea = document.createElement('textarea')
+    textArea.value = text
+    textArea.focus()
+    Object.assign(textArea.style, {
+        position: 'fixed',
+        top: '-10000px',
+        left: '-10000px',
+        'z-index': -1,
+        width: '100px',
+    })
+    document.body.append(textArea)
+
+    try {
+        textArea.select()
+        const ret = document.execCommand('copy')
+        document.body.removeChild(textArea)
+        if (!ret) {
+            console.log(`>>> 拷贝文本未选中文本.`)
+        }
+    } catch (error) {
+        console.error('<<< 改浏览器不支持 execCommand(\'copy\') 方法.')
+    }
+}
+
+/**
+ * 转换时间为目标格式
+ * @param { String } date
+ * @param { String } formatType
+ * @return { String }
+ */
+export function turnTimeToString(date, formatType = DATE_FORMAT) {
+    if (date == null || date === '') return ''
+
+    const ret = moment(date).format(formatType)
+    if (ret === INVALID_DATE) {
+        console.warn(`>>> 日期格式不合法:`, date)
+        return ''
+    }
+    return ret
 }

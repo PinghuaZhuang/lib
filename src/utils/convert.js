@@ -4,20 +4,20 @@ import { ID, PID, CHILD } from './var/treeKeys';
  * 转换数据为对象
  * @param { String } res 转换设备上报的字符数据为对象
  */
-export function parse ( res ) {
+export function parse(res) {
     let data;
     try {
-        data = JSON.parse( res );
-    } catch ( err ) {
+        data = JSON.parse(res);
+    } catch (err) {
 
-        res = res.replace( /:"{/g, ':{' );
-        res = res.replace( /}",/g, '},' );
-        res = res.replace( /}"}/g, '}}' );
-        res = res.replace( /\\/g, '' );
+        res = res.replace(/:"{/g, ':{');
+        res = res.replace(/}",/g, '},');
+        res = res.replace(/}"}/g, '}}');
+        res = res.replace(/\\/g, '');
         try {
-            data = JSON.parse( res );
-        } catch ( error ) {
-            console.error( 'RES 数据解析失败：' + error.message );
+            data = JSON.parse(res);
+        } catch (error) {
+            console.error('RES 数据解析失败：' + error.message);
         }
     }
     return data;
@@ -28,7 +28,7 @@ export function parse ( res ) {
  * @param { Array } arr 目标数组
  * @param { Object } keys { id, pid, child }
  */
-export function toTree ( arr, keys ) {
+export function toTree(arr, keys) {
     let idMap = {};         // 映射 id
     let res = [];           // 最终返回的树形结构数据
 
@@ -37,25 +37,25 @@ export function toTree ( arr, keys ) {
     let child = keys.child = CHILD;
 
     // 使用 ID 作为 key 将数组转换为对象
-    arr.forEach( function ( el ) {
-        idMap[ el [ id ] ] = el;
-    } );
+    arr.forEach(function (el) {
+        idMap[el[id]] = el;
+    });
 
     // 遍历, 判断元素是否有父节点
-    arr.forEach( function ( el ) {
-        let parent = idMap[ el[ pid ] ];
+    arr.forEach(function (el) {
+        let parent = idMap[el[pid]];
 
-        if ( parent ) {
-            if ( !parent[ child ] ) {
-                parent[ child ] = [];
+        if (parent) {
+            if (!parent[child]) {
+                parent[child] = [];
             }
-            parent[ child ].push( el );
+            parent[child].push(el);
         } else {
 
             // 没有父元素
-            res.push( el );
+            res.push(el);
         }
-    } );
+    });
 
     return res;
 }
@@ -69,7 +69,40 @@ export function transformArrayBufferToBase64(buffer) {
     let bytes = new Uint8Array(buffer)
     let len = bytes.byteLength
     for (; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
+        binary += String.fromCharCode(bytes[i]);
     }
     return window.btoa(binary);
+}
+
+/**
+ * 根据 buffer 获取 xlsx-base64 地址
+ * @param { Buffer } buffer
+ */
+export function getXlsxBase64(buffer) {
+    return `data:application/vnd.ms-excel;base64,${transformArrayBufferToBase64(buffer)}`
+}
+
+/**
+ * 根据 buffer 获取 pdf-base64 地址
+ * @param { Buffer } buffer
+ */
+export function getPdfBase64(buffer) {
+    return `data:application/pdf;base64,${transformArrayBufferToBase64(buffer)}`
+}
+
+/**
+ * base64 编码转成 Blob
+ * @param { Base64 } dataURI
+ * @return { Blob }
+ */
+export function dataURIToBlob(dataURI) {
+    let binStr = atob(dataURI.split(',')[1])
+    let len = binStr.length
+    let arr = new Uint8Array(len)
+
+    for (let i = 0; i < len; i++) {
+        arr[i] = binStr.charCodeAt(i);
+    }
+
+    return new Blob([arr])
 }
