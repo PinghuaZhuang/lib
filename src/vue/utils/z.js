@@ -258,6 +258,22 @@ export const getQueryParams = function ( url ) {
     return ret
 }
 
+export function getTextWidthPx(str, style = {}) {
+    const elPx = document.createElement('div')
+    Object.assign(elPx.style, {
+      position: 'fixed',
+      right: '-10000px',
+      top: '-100px',
+      'font-size': '14px',
+      ...style,
+    })
+    elPx.innerText = str
+    document.body.append(elPx)
+    const width = elPx.getBoundingClientRect().width
+    document.body.removeChild(elPx)
+    return width
+}
+
 /**
  * 暴露函数
  */
@@ -265,7 +281,7 @@ export default {
     install ( Vue ) {
         let $z = {
             getUUID, type, isPlainObject, extend, merge, isVNode, isEmpty,
-            getQueryParams,
+            getQueryParams, getTextWidthPx,
         }
         Vue.prototype.$z = $z
 
