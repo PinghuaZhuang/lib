@@ -124,3 +124,30 @@ export function download ( href, name = `download.xlsx` ) {
     eleLink.href = href
     eleLink.click()
 }
+
+/**
+ * 判断目标对象是否为dom对象
+ * @param { Any } obj
+ * @return { Boolean }
+ */
+export function isDOM(obj) {
+    if (typeof HTMLElement === "object") {
+        return obj instanceof HTMLElement;
+    }
+    return (
+        obj &&
+        typeof obj === "object" &&
+        obj.nodeType === 1 &&
+        typeof obj.nodeName === "string"
+    );
+}
+
+/**
+ * 判断是否为虚拟节点
+ * @param { Any } node 目标对象
+ * @return { Boolean }
+ */
+export const isVNode = function ( node ) {
+    return node !== null && typeof node === 'object' &&
+        Object.prototype.hasOwnProperty.call( node, 'componentOptions' )
+}
