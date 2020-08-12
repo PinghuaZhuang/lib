@@ -2,6 +2,11 @@
 const isServer = /* Vue.prototype.$isServer */ false
 const ieVersion = isServer ? 0 : Number( document.documentMode )
 
+/**
+ * 滚动到目标DOM位置上
+ * @param { Element } container 滚动的容器
+ * @param { Element } selected 滚动到的目标DOM
+ */
 export const scrollIntoView = function ( container, selected ) {
     if ( Vue.prototype.$isServer ) return;
 
@@ -75,6 +80,12 @@ export const once = function ( el, event, fn ) {
     on( el, event, listener )
 }
 
+/**
+ * 判断是目标DOM是否可以滚动
+ * @param { Element | Any } el 目标Dom
+ * @param { Boolean } vertical 是否是垂直方向
+ * @return { Boolean }
+ */
 export const isScroll = ( el, vertical ) => {
     if ( isServer ) return
 
@@ -88,6 +99,12 @@ export const isScroll = ( el, vertical ) => {
     return overflow.match( /(scroll|auto)/ )
 }
 
+/**
+ * 获取目标DOM滚动的容器
+ * @param { Element } el
+ * @param { Boolean } vertical
+ * @return { Element | Window }
+ */
 export const getScrollContainer = ( el, vertical ) => {
     if ( isServer ) return
 
@@ -105,6 +122,11 @@ export const getScrollContainer = ( el, vertical ) => {
     return parent
 }
 
+/**
+ * 设置光标位置
+ * @param { Element } el 目标DOM
+ * @param { Number } position 位置值
+ */
 export const setCursor = function ( el, position ) {
     let setSelectionRange = function () {
         el.setSelectionRange( position, position )

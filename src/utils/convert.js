@@ -24,7 +24,7 @@ export function parse(res) {
 }
 
 /**
- * 转换数据为树行结构
+ * 转换数据为树形状结构
  * @param { Array } arr 目标数组
  * @param { Object } keys { id, pid, child }
  */
@@ -58,6 +58,18 @@ export function toTree(arr, keys) {
     });
 
     return res;
+}
+
+/**
+ * 转换数组对象为keymap对象
+ * @param { Array } arr 目标数据
+ * @param { String } key 映射的键
+ * @return { Object }
+ */
+export function toKeyMapObj(arr, key = 'id') {
+    const ret = {}
+    arr.forEach(o => (ret[o.id] = o))
+    return ret
 }
 
 /**
