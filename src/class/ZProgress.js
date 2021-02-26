@@ -6,8 +6,17 @@
 
 const VERSION = `1.3.2`
 
+/**
+ * 不处于自动步进和自动步进结束的状态
+ */
 const STATUS_WAIT = `wait`
+/**
+ * 自定步进中的状态
+ */
 const STATUS_STARTED = `started`
+/**
+ * 自动步进结束的状态
+ */
 const STATUS_DONE = `done`
 
 // 定义是有属性
@@ -96,8 +105,12 @@ export default class ZProgress {
      * @param { Number } value 指定数值
      */
     set(value) {
-        if ((this.$_value = ZProgress.clamp(value)) >= 100) {
+        const calcValue = ZProgress.clamp(value)
+        if ((this.$_value = calcValue) >= 100) {
             this[_status] = STATUS_DONE
+        } else if (this[_status] === STATUS_DONE) {
+            // 结束后修改进度值, 状态改为 wait
+            this[_status] = STATUS_WAIT
         }
         return this
     }
