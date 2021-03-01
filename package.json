@@ -8,6 +8,7 @@
   "sideEffects": false,
   "srctype": "js",
   "scripts:ts": {
+    "compile": "babel src --out-dir .compiled --source-maps --watch",
     "rename": "node rename.js",
     "clean": "rimraf ./dist",
     "lint": "tslint -c tslint.json src/**.ts",
@@ -78,10 +79,10 @@
     "rollup-plugin-typescript2": "0.18.0",
     "rollup-plugin-uglify": "1.0.0",
     "source-map-support": "0.5.9",
-    "ts-node": "7.0.1",
+    "ts-node": "^7.0.1",
     "tslib": "1.9.3",
     "tslint": "5.11.0",
-    "typescript": "3.1.6"
+    "typescript": "^4.2.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
