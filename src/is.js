@@ -125,8 +125,8 @@ export function isEmptyObject ( obj ) {
  * 判断时间是否为空
  * @return { Boolean }
  */
-export function isEmptyDate(date) {
-return date == null || date === '' || date === INVALID_DATE
+export function isEmptyDate ( date ) {
+    return date == null || date === '' || date === 'invalid date'
 }
 
 export const isDom = ( typeof HTMLElement === 'object' ) ?

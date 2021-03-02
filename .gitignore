@@ -12,3 +12,4 @@ _*
 /coverage
 /.nyc_output
 yarn.lock
+.compiled
