@@ -13,3 +13,4 @@ _*
 /.nyc_output
 yarn.lock
 .compiled
+package-lock.json
