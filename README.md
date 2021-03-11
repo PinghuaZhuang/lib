@@ -17,10 +17,6 @@ vue-lib.
 
 
 ## :open_file_folder:Document
-
-
-
-
-
-
-
++ aio: umd
++ index: cjs
++ esm: module
