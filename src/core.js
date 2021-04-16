@@ -140,7 +140,7 @@ z.extend( {
             return value == null ? cache[ key + ' ' ] : ( cache[ key + ' ' ] = value );
         }
         return cache;
-    }
+    },
 } );
 
 

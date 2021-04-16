@@ -391,7 +391,7 @@ export function timeRange2Obj(timeRange, timeKeys = 'createTimeStart createTimeE
 
 /**
  * 获取字符串长度. 单位px
- * @param { String } str 获取字符长度
+ * @param { String } str 获取字符长度PX
  * @return { Number }
  */
 export function getTextWidthPx(str, style = {}) {

@@ -131,3 +131,25 @@ export function turnTimeToString(date, formatType = DATE_FORMAT) {
     }
     return ret
 }
+
+/**
+ * 创建缓存对象
+ * @param { Number } length
+ */
+export function createCache(length)  {
+    const keys = []
+    let cacheLength = length || 50
+
+    function cache(key, value) {
+        if (typeof key === 'function') {
+            const handler = key
+            return keys.map(k => handler(k))
+        }
+
+        if (keys.push(key + ' ') > cacheLength) {
+            delete cache[keys.shift()]
+        }
+        return value == null ? cache[key + ' '] : (cache[key + ' '] = value)
+    }
+    return cache
+}

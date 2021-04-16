@@ -173,3 +173,22 @@ export const isVNode = function ( node ) {
     return node !== null && typeof node === 'object' &&
         Object.prototype.hasOwnProperty.call( node, 'componentOptions' )
 }
+
+
+/**
+ * 获取字符长度
+ * @param {string} str
+ * @returns {number}
+ */
+export function byteLengthEn(str) {
+  if (typeof str !== 'string') return
+  let b = 0
+  for (let i = str.length - 1; i >= 0; i--) {
+    if (str.charCodeAt(i) > 255) {
+      b += 2
+    } else {
+      b++
+    }
+  }
+  return b
+}
