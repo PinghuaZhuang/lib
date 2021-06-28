@@ -1,3 +1,4 @@
+/* eslint-disable */
 var Base64 = {
     // private property
     _keyStr:
@@ -126,3 +127,5 @@ var Base64 = {
         return string;
     },
 };
+
+export default Base64
