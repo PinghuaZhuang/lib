@@ -52,13 +52,12 @@ export const useState = (defaultVisible) => {
   const target = map.get(Deep.target);
   let state = target.states[target.uid];
   if (state == null) {
-    state = Vue.observable({
+    state = target.states[target.uid] = Vue.observable({
       visible: !!defaultVisible,
       setVisible(visible) {
         state.visible = visible;
       },
     });
-    target.states[target.uid] = state;
   }
   target.uid++;
   return [state.visible, state.setVisible];
