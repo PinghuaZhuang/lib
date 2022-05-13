@@ -153,3 +153,19 @@ export function createCache(length)  {
     }
     return cache
 }
+
+/**
+ * 返回排序后的数据
+ * @param {Array<any>} arr 原数组
+ * @param {Number} index 当前索引
+ * @param {Number} [translate] 上移或者下移格数, 大于0下移, 小与0上移
+ */
+ export function translateArray(arr, index, translate = -1 /* 默认上移一格 */) {
+    if (translate === 0) return arr;
+    translate = translate > 0 ? translate + 1 : translate;
+    const dup = [...arr];
+    const target = dup.at(index);
+    dup.splice(index + translate, 0, target);
+    dup.splice(translate > 0 ? index : index + 1, 1);
+    return dup;
+  }
