@@ -173,33 +173,3 @@ export function translateArray(arr, index, translate = -1 /* 默认上移一格 
     dup.splice(translate > 0 ? index : index + 1, 1);
     return dup;
 }
-
-/**
- * 上移下移动画特效
- * @param {Element} rect 当前移动的元素
- * @param {Element} toRect 目标元素
- * @param {Number} translate 移动索引, 当前元素和目标元素在数组中的索引
- * @param {Function<any>} callback 动画结束回调
- */
-export function animate(rect, toRect, translate, callback) {
-    const { top: rectTop, bottom: reactBottom } = rect.getBoundingClientRect();
-    const { top: toRectTop, bottom: toReactBottom } =
-        toRect.getBoundingClientRect();
-    const y1 = toReactBottom - reactBottom;
-    const y2 = toRectTop - rectTop;
-    const transitionend = () => {
-        rect.style.transition = "";
-        toRect.style.transition = "";
-        rect.style.transform = "";
-        toRect.style.transform = "";
-        callback();
-        rect.removeEventListener("transitionend", transitionend);
-    };
-    rect.style.transform = `translateY(0)`;
-    rect.style.transition = `all .3s ease-in-out`;
-    toRect.style.transform = `translateY(0)`;
-    toRect.style.transition = `all .3s ease-in-out`;
-    rect.style.transform = `translateY(${translate > 0 ? y1 : y2}px)`;
-    toRect.style.transform = `translateY(${translate > 0 ? -y2 : -y1}px)`;
-    rect.addEventListener("transitionend", transitionend);
-}
