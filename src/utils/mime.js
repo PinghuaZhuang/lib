@@ -1,6 +1,7 @@
 /**
  * MIME API
  */
+// 'image/*' 所有图片
 export const MIME_MAP = {
     text: 'text/plain',
     html: 'text/html',
