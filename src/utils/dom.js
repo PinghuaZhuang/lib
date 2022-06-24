@@ -224,26 +224,3 @@ export function animate(rect, toRect, translate, callback) {
     toRect.style.transform = `translateY(${translate > 0 ? -y2 : -y1}px)`;
     rect.addEventListener("transitionend", transitionend);
 }
-
-function animate(rect, toRect, translate, callback) {
-    const { top: rectTop, bottom: reactBottom } = rect.getBoundingClientRect();
-    const { top: toRectTop, bottom: toReactBottom } =
-      toRect.getBoundingClientRect();
-    const y1 = toReactBottom - reactBottom;
-    const y2 = toRectTop - rectTop;
-    const transitionend = () => {
-      rect.style.transition = '';
-      toRect.style.transition = '';
-      rect.style.transform = '';
-      toRect.style.transform = '';
-      callback();
-      rect.removeEventListener('transitionend', transitionend);
-    };
-    rect.style.transform = `translateY(0)`;
-    rect.style.transition = `all .3s ease-in-out`;
-    toRect.style.transform = `translateY(0)`;
-    toRect.style.transition = `all .3s ease-in-out`;
-    rect.style.transform = `translateY(${translate > 0 ? y1 : y2}px)`;
-    toRect.style.transform = `translateY(${translate > 0 ? -y2 : -y1}px)`;
-    rect.addEventListener('transitionend', transitionend);
-  }
