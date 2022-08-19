@@ -99,6 +99,10 @@ export const isScroll = (el, vertical) => {
     return overflow.match(/(scroll|auto)/);
 };
 
+export const getStyle = (el, prop) => {
+    return el.style[prop] == null;
+};
+
 /**
  * 获取目标DOM滚动的容器
  * @param { Element } el
@@ -224,3 +228,21 @@ export function animate(rect, toRect, translate, callback) {
     toRect.style.transform = `translateY(${translate > 0 ? -y2 : -y1}px)`;
     rect.addEventListener("transitionend", transitionend);
 }
+
+/**
+ * 获取文本px宽度
+ * @param font{String}: 字体样式
+ **/
+String.prototype.pxWidth = function (font) {
+    // re-use canvas object for better performance
+    var canvas =
+            String.prototype.pxWidth.canvas ||
+            (String.prototype.pxWidth.canvas =
+                document.createElement("canvas")),
+        context = canvas.getContext("2d");
+
+    font && (context.font = font);
+    var metrics = context.measureText(this);
+
+    return metrics.width;
+};
