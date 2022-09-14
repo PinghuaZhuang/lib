@@ -173,3 +173,11 @@ export function translateArray(arr, index, translate = -1 /* 默认上移一格 
     dup.splice(translate > 0 ? index : index + 1, 1);
     return dup;
 }
+
+export function rotatePoint(point, angle, originPoint = { x: 0, y: 0 }) {
+    const cosA = Math.cos(angle * Math.PI / 180);
+    const sinA = Math.sin(angle * Math.PI / 180);
+    const rx = originPoint.x + (point.x - originPoint.x) * cosA - (point.y - originPoint.y) * sinA;
+    const ry = originPoint.y + (point.x - originPoint.x) * sinA - (point.y - originPoint.y) * cosA;
+    return { x: rx, y: ry };
+  }
