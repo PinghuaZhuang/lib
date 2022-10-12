@@ -37,3 +37,18 @@ export function exitFullScreen () {
         }
     }
 };
+
+function isFullScreen() {
+    if (document.fullscreen) {
+       return true;
+     } else if (document.mozFullScreen) {
+         return true;
+     } else if (document.webkitIsFullScreen) {
+         return true;
+     } else if (document.msFullscreenElement) {
+         return true;
+     } else if (window.fullScreen) {
+         return true;
+     }
+     return false;
+ }
