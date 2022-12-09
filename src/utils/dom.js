@@ -87,7 +87,7 @@ export const once = function (el, event, fn) {
  * @return { Boolean }
  */
 export const isScroll = (el, vertical) => {
-    if (isServer) return;
+    // if (isServer) return;
 
     const determinedDirection = vertical !== null || vertical !== undefined;
     const overflow = determinedDirection
@@ -100,7 +100,7 @@ export const isScroll = (el, vertical) => {
 };
 
 export const getStyle = (el, prop) => {
-    return el.style[prop] == null;
+    return el.style[prop];
 };
 
 /**
@@ -110,7 +110,7 @@ export const getStyle = (el, prop) => {
  * @return { Element | Window }
  */
 export const getScrollContainer = (el, vertical) => {
-    if (isServer) return;
+    // if (isServer) return;
 
     let parent = el;
     while (parent) {

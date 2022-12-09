@@ -22,6 +22,12 @@
             "cwd": "${workspaceRoot}",
             // "cwd": "${workspaceRoot}/NativeInvoke.ts",
             "protocol": "inspector"
+        },
+        {
+            "name": "js",
+            "type": "node",
+            "request": "launch",
+            "program": "${relativeFile}"
         }
     ]
 }
